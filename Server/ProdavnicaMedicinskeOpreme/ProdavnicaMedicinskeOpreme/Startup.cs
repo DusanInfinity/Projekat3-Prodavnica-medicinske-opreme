@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace ProdavnicaMedicinskeOpreme
 {
@@ -25,6 +26,8 @@ namespace ProdavnicaMedicinskeOpreme
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProdavnicaMedicinskeOpreme", Version = "v1" });
             });
+
+            services.AddSingleton(new MongoClient("mongodb://localhost/?safe=true"));
 
             services.AddCors(p =>
             {

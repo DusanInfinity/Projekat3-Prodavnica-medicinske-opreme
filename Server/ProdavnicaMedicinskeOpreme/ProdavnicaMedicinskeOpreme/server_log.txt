@@ -1,0 +1,2 @@
+[09-02-2022 15:04:49.526] | INFO | [Brisanje komentara] 1 test 01-Jan-01 00:00:00
+[09-02-2022 15:25:27.868] | INFO | [Brisanje komentara] 0 string 09-Feb-22 14:21:18
