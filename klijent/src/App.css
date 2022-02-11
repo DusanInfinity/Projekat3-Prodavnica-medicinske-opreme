@@ -1,0 +1,58 @@
+.App{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background: rgb(237, 249, 255); */
+}
+
+nav{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  min-height: 10vh;
+  background: rgb(237, 249, 255);
+  color: black;
+}
+
+
+
+.logo-img{
+  width: 10rem;
+}
+
+
+.kategorija-dugme{
+  border-radius: 0 !important;
+  flex-basis: 10px;
+  flex-grow: 1;
+  margin: 0 10px;
+}
+
+
+.proizvodi-container{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.proizvod-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+}
+
+.proizvod-container:hover{
+  border: none;
+  box-shadow: 0 3px 15px rgba(0,0,0,.1);
+}
+
+.proizvod-container img{
+  height: 30vh;
+  object-fit: cover;
+}
+
