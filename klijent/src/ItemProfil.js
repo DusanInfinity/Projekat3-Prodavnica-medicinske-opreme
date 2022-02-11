@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Link, useParams } from "react-router-dom";
+import KomentariProfil from "./komentariProfil";
 
 function ItemProfil() {
 	let { id } = useParams();
@@ -94,91 +95,109 @@ function ItemProfil() {
 		}
 	}
 
-	function DodajUKorpu() {
+	function DodajUKorpu({ kol }) {
 		const [kolicina, setKolicina] = useState(0);
-
-		return (
-			<div className="d-flex justify-content-start align-items-center">
-				<div className="me-4">
-					<div className="input-group">
-						<div className="input-group-prepend">
-							<button
-								className="btn btn-outline-dark rounded-0 rounded-start"
-								style={{ width: "40px" }}
-								onClick={() => {
-									if (kolicina > 0) {
-										setKolicina(kolicina - 1);
-									}
+		if (kol > 0) {
+			return (
+				<div className="d-flex justify-content-start align-items-center">
+					<div className="me-4">
+						<div className="input-group">
+							<div className="input-group-prepend">
+								<button
+									className="btn btn-outline-dark rounded-0 rounded-start"
+									style={{ width: "40px" }}
+									onClick={() => {
+										if (kolicina > 0) {
+											setKolicina(kolicina - 1);
+										}
+									}}
+								>
+									-
+								</button>
+							</div>
+							<input
+								type="text"
+								disabled={true}
+								value={kolicina}
+								style={{
+									width: "40px",
+									textAlign: "center",
+									boxSizing: "border-box",
+									outline: "none",
+									border: "1px solid gray",
+									cursor: "pointer",
 								}}
-							>
-								-
-							</button>
-						</div>
-						<input
-							type="text"
-							disabled={true}
-							value={kolicina}
-							style={{
-								width: "40px",
-								textAlign: "center",
-								boxSizing: "border-box",
-								outline: "none",
-								border: "1px solid gray",
-								cursor: "pointer",
-							}}
-						/>
-						<div className="input-group-append">
-							<button
-								className="btn btn-outline-dark rounded-0 rounded-end"
-								style={{ width: "40px" }}
-								onClick={() => {
-									setKolicina(kolicina + 1);
-								}}
-							>
-								+
-							</button>
+							/>
+							<div className="input-group-append">
+								<button
+									className="btn btn-outline-dark rounded-0 rounded-end"
+									style={{ width: "40px" }}
+									onClick={() => {
+										if (kolicina < kol) {
+											setKolicina(kolicina + 1);
+										}
+									}}
+								>
+									+
+								</button>
+							</div>
 						</div>
 					</div>
+					<button
+						className="btn me-4"
+						style={{
+							color: "white",
+							background: "#fe7234",
+							fontSize: "1.2rem",
+						}}
+					>
+						<i className="bi bi-cart me-2"></i>Dodaj u korpu
+					</button>
+					<button
+						className="btn btn-outline-primary"
+						style={{ fontSize: "1.2rem" }}
+					>
+						<i className="bi bi-heart"></i>
+					</button>
 				</div>
-				<button
-					className="btn me-4"
-					style={{
-						color: "white",
-						background: "#fe7234",
-						fontSize: "1.2rem",
-					}}
-				>
-					<i className="bi bi-cart me-2"></i>Dodaj u korpu
-				</button>
+			);
+		} else {
+			return (
 				<button
 					className="btn btn-outline-primary"
 					style={{ fontSize: "1.2rem" }}
 				>
 					<i className="bi bi-heart"></i>
 				</button>
-			</div>
-		);
+			);
+		}
 	}
 
 	return (
-		<div className="proizvod-profil-container col-md-8 d-flex">
-			<img
-				src={item.image}
-				alt="/"
-				className="col-md-6"
-				style={{ height: "60vh", width: "auto", objectFit: "" }}
-			/>
-			<div className="proizvod-profil-data col-md-6">
-				<h2>{item.name}</h2>
-				<ProizvodNaStanju kolicina={item.quantity} />
-				<hr />
-				<h2 style={{ fontWeight: "bold", color: "#e6127c" }}>
-					{formatPrice(item.price)}
-				</h2>
-				<DodajUKorpu />
-				<hr />
-				<FormaEmail kolicina={item.quantity} />
+		<div className="col-md-8 d-flex flex-column">
+			<div className="proizvod-profil-container col-md-12 d-flex">
+				<img
+					src={item.image}
+					alt="/"
+					className="col-md-6"
+					style={{ height: "60vh", width: "auto", objectFit: "" }}
+				/>
+				<div className="proizvod-profil-data col-md-6">
+					<h2>{item.name}</h2>
+					<ProizvodNaStanju kolicina={item.quantity} />
+					<hr />
+					<h5>{item.description}</h5>
+					<h2 style={{ fontWeight: "bold", color: "#e6127c" }}>
+						{formatPrice(item.price)}
+					</h2>
+					<DodajUKorpu kol={item.quantity} />
+					<hr />
+					<FormaEmail kolicina={item.quantity} />
+				</div>
 			</div>
+			<KomentariProfil productCode={item.productCode} />
+
+			<div style={{ height: "200px" }}></div>
 		</div>
 	);
 }

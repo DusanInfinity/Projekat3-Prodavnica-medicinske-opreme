@@ -1,58 +1,82 @@
-.App{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* background: rgb(237, 249, 255); */
+.App {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* background: rgb(237, 249, 255); */
 }
 
-nav{
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-  min-height: 10vh;
-  background: rgb(237, 249, 255);
-  color: black;
+nav {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	justify-content: space-around;
+	align-items: center;
+	width: 100%;
+	min-height: 10vh;
+	background: rgb(237, 249, 255);
+	color: black;
+}
+
+.logo-img {
+	width: 10rem;
+}
+
+.kategorija-dugme {
+	border-radius: 0 !important;
+	flex-basis: 10px;
+	flex-grow: 1;
+	margin: 0 10px;
+}
+
+.proizvodi-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.proizvod-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin: 10px;
+}
+
+.proizvod-container:hover {
+	border: none;
+	box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+}
+
+.proizvod-container img {
+	height: 30vh;
+	object-fit: cover;
 }
 
 
-
-.logo-img{
-  width: 10rem;
+.korpa-tabela thead {
+	border-top: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
 }
 
-
-.kategorija-dugme{
-  border-radius: 0 !important;
-  flex-basis: 10px;
-  flex-grow: 1;
-  margin: 0 10px;
+.korpa-tabela thead th {
+	font-weight: 500;
+	padding: 10px 10px;
 }
 
-
-.proizvodi-container{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+.proizvod-container-korpa img {
+	height: 15vh;
+	object-fit: cover;
 }
 
-.proizvod-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin: 10px;
+.proizvod-container-korpa .input-group{
+	justify-content: center !important;
 }
 
-.proizvod-container:hover{
-  border: none;
-  box-shadow: 0 3px 15px rgba(0,0,0,.1);
+.korpa-tabela tbody tr{
+	border-bottom: 1px solid lightgray;
 }
 
-.proizvod-container img{
-  height: 30vh;
-  object-fit: cover;
+.korpa-tabela tbody td{
+	display: flex;
+	align-items: center;
 }
-
