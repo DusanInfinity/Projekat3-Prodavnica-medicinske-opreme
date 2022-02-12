@@ -1,10 +1,14 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
+using ProdavnicaMedicinskeOpreme.Services;
+using System.Text;
 
 namespace ProdavnicaMedicinskeOpreme
 {
@@ -28,6 +32,7 @@ namespace ProdavnicaMedicinskeOpreme
             });
 
             services.AddSingleton(new MongoClient("mongodb://localhost/?safe=true"));
+            services.AddScoped<UserService>();
 
             services.AddCors(p =>
             {
@@ -40,6 +45,24 @@ namespace ProdavnicaMedicinskeOpreme
                                         "http://localhost:5500",
                                         "http://192.168.0.105:5500").AllowAnyOrigin();
                 });
+            });
+
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(a =>
+            {
+                a.RequireHttpsMetadata = false;
+                a.SaveToken = true;
+                a.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("!sMW_5su1VdPT@HsKe1d_VNg")),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
         }
 
@@ -57,6 +80,8 @@ namespace ProdavnicaMedicinskeOpreme
 
             app.UseRouting();
             app.UseCors("CORS");
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

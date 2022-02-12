@@ -2,10 +2,10 @@
 using MongoDB.Driver;
 using System;
 using System.Threading.Tasks;
-using WebShop.Data;
-using WebShop.Models;
+using ProdavnicaMedicinskeOpreme.Data;
+using ProdavnicaMedicinskeOpreme.Models;
 
-namespace WebShop.Controllers
+namespace ProdavnicaMedicinskeOpreme.Controllers
 {
     [ApiController]
     [Route("[controller]")]

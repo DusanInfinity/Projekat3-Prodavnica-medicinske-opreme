@@ -1,6 +1,6 @@
-﻿namespace WebShop.Models
+﻿namespace ProdavnicaMedicinskeOpreme.Models
 {
-    public class Customer
+    public class CustomerData
     {
         public string Firstname { get; set; }
         public string Lastname { get; set; }

@@ -3,7 +3,7 @@ using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace WebShop.Models
+namespace ProdavnicaMedicinskeOpreme.Models
 {
     public class Product
     {

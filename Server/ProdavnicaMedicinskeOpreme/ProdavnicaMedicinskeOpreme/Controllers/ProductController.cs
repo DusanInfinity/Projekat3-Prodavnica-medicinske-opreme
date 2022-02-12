@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using WebShop.Data;
-using WebShop.Models;
+using ProdavnicaMedicinskeOpreme.Data;
+using ProdavnicaMedicinskeOpreme.Models;
 
-namespace WebShop.Controllers
+namespace ProdavnicaMedicinskeOpreme.Controllers
 {
     [ApiController]
     [Route("[controller]")]

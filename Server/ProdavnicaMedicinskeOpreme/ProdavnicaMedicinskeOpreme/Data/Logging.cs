@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-namespace WebShop.Data
+namespace ProdavnicaMedicinskeOpreme.Data
 {
 
     public class Logging

@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace WebShop.Models
+namespace ProdavnicaMedicinskeOpreme.Models
 {
     public class OrderedProduct
     {
