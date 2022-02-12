@@ -5,10 +5,26 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Kategorije from "./kategorije";
+import { Modal, Button } from "react-bootstrap";
+import ApiClient from "./Global/apiClient";
 
 function Nav() {
+	const api = new ApiClient();
+
 	const [searchInput, setSearchInput] = useState("");
 	const [korpaCounter, setKorpaCounter] = useState(0);
+
+	const [showDodaj, setShowDodaj] = useState(false);
+	const handleCloseDodaj = () => setShowDodaj(false);
+	const handleShowDodaj = () => setShowDodaj(true);
+
+	const kategorije = [
+		"Parfemi",
+		"Deciji kutak",
+		"Muski kutak",
+		"Lekovi",
+		"Zenski kutak",
+	];
 
 	useEffect(() => {
 		let products = localStorage.getItem("korpa_proizvodi");
@@ -75,6 +91,147 @@ function Nav() {
 		}
 	};
 
+	const AdminFunkcionalnosti = () => {
+		const data = sessionStorage.getItem("user");
+		if (data) {
+			const user = JSON.parse(data);
+			if (user.role === "Admin") {
+				return (
+					<div className="mb-3">
+						<button
+							className="btn btn-secondary"
+							onClick={handleShowDodaj}
+						>
+							Dodaj proizvod
+						</button>
+					</div>
+				);
+			}
+			return null;
+		} else {
+			return null;
+		}
+	};
+
+	const ModalDodajProizvod = () => {
+		const [produktKod, setProduktKod] = useState("");
+		const [naziv, setNaziv] = useState("");
+		const [cena, setCena] = useState("");
+		const [deskripcija, setDeskripcija] = useState("");
+		const [kolicina, setKolicina] = useState("");
+		const [kategorija, setKategorija] = useState("");
+
+		return (
+			<Modal show={showDodaj} onHide={handleCloseDodaj}>
+				<Modal.Header closeButton>
+					<Modal.Title>Dodaj proizvod</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Produkt kod</label>
+						<input
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setProduktKod(e.target.value)}
+							value={produktKod}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Naziv</label>
+						<input
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setNaziv(e.target.value)}
+							value={naziv}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Cena</label>
+						<input
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setCena(e.target.value)}
+							value={cena}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Deskripcija</label>
+						<textarea
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setDeskripcija(e.target.value)}
+							value={deskripcija}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Kolicina</label>
+						<input
+							type="number"
+							className="col-md-8"
+							onChange={(e) => setKolicina(e.target.value)}
+							value={kolicina}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Kategorija</label>
+						<select
+							className="col-md-8"
+							style={{
+								textDecoration: "none",
+								background: "white",
+								outline: "none",
+							}}
+							onChange={(e) => {
+								setKategorija(e.target.value);
+							}}
+						>
+							{kategorije.map((kat) => {
+								return (
+									<option key={kat} value={kat}>
+										{kat}
+									</option>
+								);
+							})}
+						</select>
+					</div>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleCloseDodaj}>
+						Zatvori
+					</Button>
+					<Button
+						variant="primary"
+						onClick={async () => {
+							handleCloseDodaj();
+							const product = {
+								productCode: produktKod,
+								name: naziv,
+								price: cena,
+								quantity: kolicina,
+								description: deskripcija,
+								image: "https://shop.lilly.rs/media/catalog/product/cache/e9fe89bb0d3d5e05736d64f06cc6558c/5/0/5060693811968_1.jpg",
+								category: kategorija,
+							};
+							try {
+								api.setHeader(
+									"Content-Type",
+									"application/json"
+								);
+								await api.produkti.dodajProdukt(product);
+								alert("Produkt uspesno azuriran");
+								window.location.reload();
+							} catch (e) {
+								alert(`Probajte sa drugim produkt kodom. ${e.message}`);
+							}
+						}}
+					>
+						Sacuvaj izmene
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		);
+	};
+
 	return (
 		<nav>
 			<div className="col-md-12 border-gray border-bottom d-flex justify-content-center">
@@ -126,6 +283,8 @@ function Nav() {
 				</div>
 			</div>
 			<Kategorije />
+			<AdminFunkcionalnosti />
+			<ModalDodajProizvod />
 		</nav>
 	);
 }

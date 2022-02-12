@@ -20,6 +20,25 @@ function Home() {
 		} catch (e) {
 			alert(e.message);
 		}
+
+		// try {
+		// 	const produkt = {
+		// 		_id: {
+		// 			timestamp: 0,
+		// 		},
+		// 		productCode: 2,
+		// 		name: "bromazepoam",
+		// 		price: 11111,
+		// 		quantity: 10,
+		// 		description: "deskripcija",
+		// 		image: "https://shop.lilly.rs/media/catalog/product/cache/e9fe89bb0d3d5e05736d64f06cc6558c/5/0/5060693811968_1.jpg",
+		// 		category: "lekovi",
+		// 	};
+		// 	api.setHeader("Content-Type", "application/json");
+		// 	await api.produkti.dodajProdukt(produkt);
+		// } catch (e) {
+		// 	alert(e);
+		// }
 	};
 
 	return (

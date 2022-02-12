@@ -4,9 +4,12 @@ import { Link, useParams } from "react-router-dom";
 import KomentariProfil from "./komentariProfil";
 import ApiClient from "./Global/apiClient";
 import { Modal, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function ItemProfil() {
 	const api = new ApiClient();
+
+	const navigate = useNavigate();
 
 	let { id } = useParams();
 
@@ -242,7 +245,6 @@ function ItemProfil() {
 		const [cena, setCena] = useState(item.price);
 		const [deskripcija, setDeskripcija] = useState(item.description);
 		const [kolicina, setKolicina] = useState(item.quantity);
-		const [kategorija, setKategorija] = useState(item.category);
 
 		return (
 			<Modal show={showIzmeni} onHide={handleCloseIzmeni}>
@@ -286,35 +288,6 @@ function ItemProfil() {
 							value={kolicina}
 						/>
 					</div>
-					<div className="col-md-12 d-flex justify-content-between mb-3">
-						<label>Kategorija</label>
-						<select
-							className="col-md-8"
-							style={{
-								textDecoration: "none",
-								background: "white",
-								outline: "none",
-							}}
-							onChange={(e) => {
-								setKategorija(e.target.value);
-							}}
-						>
-							{kategorije.map((kat) => {
-								if (kat === kategorija) {
-									return (
-										<option key={kat} value={kat} selected>
-											{kat}
-										</option>
-									);
-								}
-								return (
-									<option key={kat} value={kat}>
-										{kat}
-									</option>
-								);
-							})}
-						</select>
-					</div>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleCloseIzmeni}>
@@ -330,7 +303,6 @@ function ItemProfil() {
 								price: cena,
 								quantity: kolicina,
 								description: deskripcija,
-								category: kategorija,
 								image: item.image,
 							};
 							try {
@@ -338,7 +310,6 @@ function ItemProfil() {
 									"Content-Type",
 									"application/json"
 								);
-								console.log(product);
 								await api.produkti.azurirajProdukt(product);
 								alert("Produkt uspesno azuriran");
 								window.location.reload();
@@ -358,17 +329,27 @@ function ItemProfil() {
 		return (
 			<Modal show={showObrisi} onHide={handleCloseObrisi}>
 				<Modal.Header closeButton>
-					<Modal.Title>Modal heading</Modal.Title>
+					<Modal.Title>Brisanje proizvoda</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					Woohoo, you're reading this text in a modal!
+					Da li ste sigurni da zelite da obrisete proizvod{" "}
+					<span style={{fontWeight: "bold"}}>{item.name}</span>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleCloseObrisi}>
-						Close
+						Zatvori
 					</Button>
-					<Button variant="primary" onClick={handleCloseObrisi}>
-						Save Changes
+					<Button variant="danger" onClick={handleCloseObrisi} onClick={async () => {
+						try{
+							await api.produkti.obrisiProdukt(item.productCode);
+							alert("Uspesno ste obrisali proizvod");
+							navigate("/");
+						}
+						catch(e){
+							alert(e.message);
+						}
+					}}>
+						Sacuvaj
 					</Button>
 				</Modal.Footer>
 			</Modal>
