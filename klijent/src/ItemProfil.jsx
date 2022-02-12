@@ -16,6 +16,7 @@ function ItemProfil() {
 	const [item, setItem] = useState([]);
 	const [prosecnaOcena, setProsecnaOcena] = useState(0);
 	const [trenutnaOcena, setTrenutnaOcena] = useState(0);
+	const [zvezdice, setZvezdice] = useState([]);
 
 	const kategorije = [
 		"Parfemi",
@@ -36,16 +37,20 @@ function ItemProfil() {
 
 	useEffect(() => {
 		fetchItem();
+		inicijalizujZvezdice(id);
 	}, []);
+
+	useEffect(() => {
+		obojiZvezdice(trenutnaOcena);
+	}, [zvezdice]);
 
 	const fetchItem = async () => {
 		const data = await api.produkti.vratiPodatkeProdukta(id);
 		setItem(data);
 
 		try {
-			// sredi api
-			console.log(await api.ocene.vratiBrojOcenaIProsek(id));
-			setProsecnaOcena(1);
+			const ocena = await api.ocene.vratiBrojOcenaIProsek(id);
+			setProsecnaOcena(ocena.item2);
 		} catch (e) {
 			alert(e.message);
 		}
@@ -371,78 +376,101 @@ function ItemProfil() {
 		);
 	};
 
-	const inicijalizujZvezdice = async (redniBroj) => {
+	const inicijalizujZvezdice = async (id) => {
 		try {
-			const ocena = await api.ocene.vratiKorisnikovuOcenu(
-				item.productCode
-			);
-			console.log(ocena);
+			const ocena = await api.ocene.vratiKorisnikovuOcenu(id);
+			setTrenutnaOcena(ocena);
+			let niz = [];
+			for (let i = 1; i <= 5; i++) {
+				if (i <= ocena) {
+					niz.push({
+						class: "active-star",
+						prvi: i,
+						drugi: 5 - i + 1,
+					});
+				} else {
+					niz.push({
+						class: "",
+						prvi: i,
+						drugi: 5 - i + 1,
+					});
+				}
+			}
+			setZvezdice(niz);
 		} catch (e) {
 			alert(e.message);
 		}
-
-		obojiZvezdice(redniBroj);
 	};
 
-	const obojiZvezdice = async (redniBroj) => {
-		console.log(redniBroj);
-		setTrenutnaOcena(redniBroj);
-		let niz_zvezdica = [];
-		niz_zvezdica.push(document.querySelector(".s5"));
-		niz_zvezdica.push(document.querySelector(".s4"));
-		niz_zvezdica.push(document.querySelector(".s3"));
-		niz_zvezdica.push(document.querySelector(".s2"));
-		niz_zvezdica.push(document.querySelector(".s1"));
-
-		for (let i = 0; i < redniBroj; i++) {
-			if (!niz_zvezdica[i].classList.contains("active-class")) {
-				niz_zvezdica[i].classList.add("active-star");
-			}
+	const obojiZvezdice = async (redniBroj) => { 
+		console.log(zvezdice);
+		for (let i = redniBroj; i >= 0; i--) {
+			zvezdice[i].class = "active active-class";
 		}
-		for (let i = redniBroj; i < 5; i++) {
-			if (niz_zvezdica[i].classList.contains("active-class")) {
-				niz_zvezdica[i].classList.remove("active-star");
-			}
+		for (let i = 4; i >= redniBroj; i--) {
+			zvezdice[i].class = "";
 		}
+	};
 
+	const oceniZvezdice = async (redniBroj) => {
 		try {
 			api.setHeader("Content-Type", "application/json");
 			await api.ocene.oceniProizvod(item.productCode, redniBroj);
+			setTrenutnaOcena(redniBroj);
 		} catch (e) {
 			alert(e.message);
 		}
+		obojiZvezdice(redniBroj);
 	};
 
 	const OceniProizvod = () => {
 		return (
 			<div className="d-flex">
-				<h2>{prosecnaOcena}</h2>
+				<div
+					className="d-flex align-items-center mx-3"
+					style={{ textAlign: "center" }}
+				>
+					<label style={{ fontSize: "2.5rem" }}>
+						{prosecnaOcena}
+					</label>
+				</div>
 				<div className="star-wrapper">
-					<i
+					{/* <i
 						href="#"
 						className="bi bi-star-fill s1"
-						onClick={() => obojiZvezdice(5)}
+						onClick={() => oceniZvezdice(5)}
 					></i>
 					<i
 						href="#"
 						className="bi bi-star-fill s2"
-						onClick={() => obojiZvezdice(4)}
+						onClick={() => oceniZvezdice(4)}
 					></i>
 					<i
 						href="#"
 						className="bi bi-star-fill s3"
-						onClick={() => obojiZvezdice(3)}
+						onClick={() => oceniZvezdice(3)}
 					></i>
 					<i
 						href="#"
 						className="bi bi-star-fill s4"
-						onClick={() => obojiZvezdice(2)}
+						onClick={() => oceniZvezdice(2)}
 					></i>
 					<i
 						href="#"
 						className="bi bi-star-fill s5"
-						onClick={() => obojiZvezdice(1)}
-					></i>
+						onClick={() => oceniZvezdice(1)}
+					></i> */}
+					{zvezdice.map((el) => {
+						return (
+							<i
+								key={el.prvi}
+								className={
+									`bi bi-star-fill s${el.prvi} ` + el.class
+								}
+								onClick={() => oceniZvezdice(el.drugi)}
+							></i>
+						);
+					})}
 				</div>
 			</div>
 		);
