@@ -120,12 +120,14 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             var products = new List<Product>();
             try
             {
-                List<string> strings = searchString.Split(" ").ToList();
-                if (strings.Count < 1)
+                if (string.IsNullOrEmpty(searchString))
                     return Ok(products);
 
-                for (int i = 0; i < strings.Count; i++)
-                    strings[i] = strings[i].ToLower();
+                searchString = searchString.ToLower();
+
+                //List<string> strings = searchString.Split(" ").ToList();
+                //if (strings.Count < 1)
+                //return Ok(products);
 
                 var db = _dbClient.GetDatabase("prodavnica");
                 var collection = db.GetCollection<Product>("produkti");
@@ -134,10 +136,26 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                 //var filter = Builders<Product>.Filter.AnyIn("Name", strings);
                 //products = await (await collection.FindAsync(filter)).ToListAsync();
 
-                products = collection.AsQueryable<Product>().Where(p => strings.Contains(p.Name.ToLower())).ToList();
+                //products = await collection.AsQueryable<Product>().Where(p => strings.Any(s => p.Name.ToLower().Contains(s))).ToListAsync();
+
+                //products = await collection.Find(p => strings.Any(s => p.Name.ToLower().Contains(s))).ToListAsync(); //strings.Any(p.Name.ToLower().Contains)
+
+                /*List<Product> allProducts = await (await collection.FindAsync(_ => true)).ToListAsync();
+
+                foreach (Product p in allProducts)
+                {
+                    if (strings.Any(p.Name.ToLower().Contains))
+                        products.Add(p);
+                } */
+
+                // Iznad su pretrage po tagovima
+
+                // Ovo je pretraga po punom imenu - case insensitive
+                products = await (await collection.FindAsync(p => p.Name.ToLower().Contains(searchString))).ToListAsync();
             }
-            catch
+            catch (Exception ex)
             {
+                Log.ExceptionTrace(ex);
                 return BadRequest(new { message = $"Doslo je do greske prilikom pretrage produkata!" });
             }
 

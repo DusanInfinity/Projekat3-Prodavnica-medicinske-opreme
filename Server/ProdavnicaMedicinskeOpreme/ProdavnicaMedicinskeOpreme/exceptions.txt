@@ -1,0 +1,74 @@
+[12-02-2022 23:10:43.194] | ProductController.PretraziProdukte Render
+The serializer for field 'Name' must implement IBsonArraySerializer and provide item serialization info.
+   at MongoDB.Driver.ArrayOperatorFilterDefinition`2.Render(IBsonSerializer`1 documentSerializer, IBsonSerializerRegistry serializerRegistry, LinqProvider linqProvider)
+   at MongoDB.Driver.MongoCollectionImpl`1.CreateFindOperation[TProjection](FilterDefinition`1 filter, FindOptions`2 options)
+   at MongoDB.Driver.MongoCollectionImpl`1.FindAsync[TProjection](IClientSessionHandle session, FilterDefinition`1 filter, FindOptions`2 options, CancellationToken cancellationToken)
+   at MongoDB.Driver.MongoCollectionImpl`1.<>c__DisplayClass48_0`1.<FindAsync>b__0(IClientSessionHandle session)
+   at MongoDB.Driver.MongoCollectionImpl`1.UsingImplicitSessionAsync[TResult](Func`2 funcAsync, CancellationToken cancellationToken)
+   at ProdavnicaMedicinskeOpreme.Controllers.ProductController.PretraziProdukte(String searchString) in E:\Moji podaci\FAX podaci\IV godina\VII semestar\Napredne baze podataka\Projekat 3 - Prodavnica medicinske opreme\Server\ProdavnicaMedicinskeOpreme\ProdavnicaMedicinskeOpreme\Controllers\ProductController.cs:line 135
+Dodatan komentar: NULL
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[12-02-2022 23:24:44.244] | ProductController.PretraziProdukte Translate
+Unsupported filter: Any(value(System.Collections.Generic.List`1[System.String]).Where({document}{Name}.ToLower().Contains({document}))).
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.PredicateTranslator.Translate(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.PredicateTranslator.Translate(Expression node, IBsonSerializerRegistry serializerRegistry)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.QueryableTranslator.TranslateWhere(WhereExpression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.QueryableTranslator.Translate(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.QueryableTranslator.TranslatePipeline(PipelineExpression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.QueryableTranslator.Translate(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.QueryableTranslator.Translate(Expression node, IBsonSerializerRegistry serializerRegistry, ExpressionTranslationOptions translationOptions)
+   at MongoDB.Driver.Linq.Linq2Implementation.MongoQueryProviderImpl`1.Translate(Expression expression)
+   at MongoDB.Driver.Linq.Linq2Implementation.MongoQueryProviderImpl`1.ExecuteAsync[TResult](Expression expression, CancellationToken cancellationToken)
+   at MongoDB.Driver.Linq.Linq2Implementation.MongoQueryableImpl`2.ToCursorAsync(CancellationToken cancellationToken)
+   at MongoDB.Driver.IAsyncCursorSourceExtensions.ToListAsync[TDocument](IAsyncCursorSource`1 source, CancellationToken cancellationToken)
+   at ProdavnicaMedicinskeOpreme.Controllers.ProductController.PretraziProdukte(String searchString) in E:\Moji podaci\FAX podaci\IV godina\VII semestar\Napredne baze podataka\Projekat 3 - Prodavnica medicinske opreme\Server\ProdavnicaMedicinskeOpreme\ProdavnicaMedicinskeOpreme\Controllers\ProductController.cs:line 137
+Dodatan komentar: NULL
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[12-02-2022 23:26:19.555] | ProductController.PretraziProdukte Translate
+Unsupported filter: Any(value(System.Collections.Generic.List`1[System.String]).Where({document}{Name}.ToLower().Contains({document}))).
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.PredicateTranslator.Translate(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.PredicateTranslator.Translate(Expression node, IBsonSerializerRegistry serializerRegistry)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.PredicateTranslator.Translate[TDocument](Expression`1 predicate, IBsonSerializer`1 parameterSerializer, IBsonSerializerRegistry serializerRegistry)
+   at MongoDB.Driver.Linq.Linq2Implementation.LinqProviderAdapterV2.TranslateExpressionToFilter[TDocument](Expression`1 expression, IBsonSerializer`1 documentSerializer, IBsonSerializerRegistry serializerRegistry)
+   at MongoDB.Driver.ExpressionFilterDefinition`1.Render(IBsonSerializer`1 documentSerializer, IBsonSerializerRegistry serializerRegistry, LinqProvider linqProvider)
+   at MongoDB.Driver.MongoCollectionImpl`1.CreateFindOperation[TProjection](FilterDefinition`1 filter, FindOptions`2 options)
+   at MongoDB.Driver.MongoCollectionImpl`1.FindAsync[TProjection](IClientSessionHandle session, FilterDefinition`1 filter, FindOptions`2 options, CancellationToken cancellationToken)
+   at MongoDB.Driver.MongoCollectionImpl`1.<>c__DisplayClass48_0`1.<FindAsync>b__0(IClientSessionHandle session)
+   at MongoDB.Driver.MongoCollectionImpl`1.UsingImplicitSessionAsync[TResult](Func`2 funcAsync, CancellationToken cancellationToken)
+   at MongoDB.Driver.IAsyncCursorSourceExtensions.ToListAsync[TDocument](IAsyncCursorSource`1 source, CancellationToken cancellationToken)
+   at ProdavnicaMedicinskeOpreme.Controllers.ProductController.PretraziProdukte(String searchString) in E:\Moji podaci\FAX podaci\IV godina\VII semestar\Napredne baze podataka\Projekat 3 - Prodavnica medicinske opreme\Server\ProdavnicaMedicinskeOpreme\ProdavnicaMedicinskeOpreme\Controllers\ProductController.cs:line 139
+Dodatan komentar: NULL
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[12-02-2022 23:27:24.332] | ProductController.PretraziProdukte ChkCast_Helper
+Unable to cast object of type 'System.Linq.Expressions.UnaryExpression' to type 'System.Linq.Expressions.LambdaExpression'.
+   at MongoDB.Driver.Linq.Linq2Implementation.ExpressionHelper.GetLambda(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.EmbeddedPipeline.MethodCallBinders.AnyBinder.Bind(PipelineExpression pipeline, EmbeddedPipelineBindingContext bindingContext, MethodCallExpression node, IEnumerable`1 arguments)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.MethodInfoMethodCallBinder`1.Bind(PipelineExpression pipeline, TBindingContext bindingContext, MethodCallExpression node, IEnumerable`1 arguments)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.CompositeMethodCallBinder`1.Bind(PipelineExpression pipeline, TBindingContext bindingContext, MethodCallExpression node, IEnumerable`1 arguments)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.PipelineBinderBase`1.BindMethodCall(MethodCallExpression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.PipelineBinderBase`1.Bind(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.EmbeddedPipeline.EmbeddedPipelineBinder.Bind(Expression node, IBindingContext parent)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.SerializationBinder.BindEmbeddedPipeline(MethodCallExpression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.SerializationBinder.VisitMethodCall(MethodCallExpression node)
+   at System.Linq.Expressions.MethodCallExpression.Accept(ExpressionVisitor visitor)
+   at System.Linq.Expressions.ExpressionVisitor.Visit(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.SerializationBinder.Visit(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.SerializationBinder.Bind(Expression node, IBindingContext context, Boolean isClientSideProjection)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.PipelineBindingContext.Bind(Expression node, Boolean isClientSideProjection)
+   at MongoDB.Driver.Linq.Linq2Implementation.Processors.PipelineBindingContext.Bind(Expression node)
+   at MongoDB.Driver.Linq.Linq2Implementation.Translators.PredicateTranslator.Translate[TDocument](Expression`1 predicate, IBsonSerializer`1 parameterSerializer, IBsonSerializerRegistry serializerRegistry)
+   at MongoDB.Driver.Linq.Linq2Implementation.LinqProviderAdapterV2.TranslateExpressionToFilter[TDocument](Expression`1 expression, IBsonSerializer`1 documentSerializer, IBsonSerializerRegistry serializerRegistry)
+   at MongoDB.Driver.ExpressionFilterDefinition`1.Render(IBsonSerializer`1 documentSerializer, IBsonSerializerRegistry serializerRegistry, LinqProvider linqProvider)
+   at MongoDB.Driver.MongoCollectionImpl`1.CreateFindOperation[TProjection](FilterDefinition`1 filter, FindOptions`2 options)
+   at MongoDB.Driver.MongoCollectionImpl`1.FindAsync[TProjection](IClientSessionHandle session, FilterDefinition`1 filter, FindOptions`2 options, CancellationToken cancellationToken)
+   at MongoDB.Driver.MongoCollectionImpl`1.<>c__DisplayClass48_0`1.<FindAsync>b__0(IClientSessionHandle session)
+   at MongoDB.Driver.MongoCollectionImpl`1.UsingImplicitSessionAsync[TResult](Func`2 funcAsync, CancellationToken cancellationToken)
+   at MongoDB.Driver.IAsyncCursorSourceExtensions.ToListAsync[TDocument](IAsyncCursorSource`1 source, CancellationToken cancellationToken)
+   at ProdavnicaMedicinskeOpreme.Controllers.ProductController.PretraziProdukte(String searchString) in E:\Moji podaci\FAX podaci\IV godina\VII semestar\Napredne baze podataka\Projekat 3 - Prodavnica medicinske opreme\Server\ProdavnicaMedicinskeOpreme\ProdavnicaMedicinskeOpreme\Controllers\ProductController.cs:line 139
+Dodatan komentar: NULL
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+[12-02-2022 23:34:36.963] | ProductController.PretraziProdukte MoveNext
+Object reference not set to an instance of an object.
+   at ProdavnicaMedicinskeOpreme.Controllers.ProductController.PretraziProdukte(String searchString) in E:\Moji podaci\FAX podaci\IV godina\VII semestar\Napredne baze podataka\Projekat 3 - Prodavnica medicinske opreme\Server\ProdavnicaMedicinskeOpreme\ProdavnicaMedicinskeOpreme\Controllers\ProductController.cs:line 123
+Dodatan komentar: NULL
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
