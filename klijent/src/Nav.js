@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Kategorije from "./kategorije";
 
 function Nav() {
+	const [searchInput, setSearchInput] = useState("");
+
+	
+	let navigate = useNavigate();
+	const pretraga = () => {
+		let path = `search/${searchInput}`;
+		let input = document.getElementById("search-input");
+		input.value = "";
+		navigate(path)
+	};
+
 	return (
 		<nav>
 			<div className="col-md-12 border-gray border-bottom d-flex justify-content-center">
@@ -14,11 +26,11 @@ function Nav() {
 						className="bi bi-person"
 						style={{ fontSize: "2rem", color: "blue" }}
 					></i>
-					<Link to={"/"} className="mx-2">
+					<Link to={"/login"} className="mx-2">
 						Prijava
 					</Link>
 					/
-					<Link to={"/"} className="mx-2">
+					<Link to={"/registracija"} className="mx-2">
 						Registracija
 					</Link>
 				</div>
@@ -34,11 +46,14 @@ function Nav() {
 							className="form-control"
 							placeholder="Naziv proizvoda..."
 							aria-describedby="basic-addon2"
+							id="search-input"
+							onChange={(e) => setSearchInput(e.target.value)}
 						/>
 						<div className="input-group-append">
 							<button
 								className="btn btn-outline-secondary"
 								type="button"
+								onClick={pretraga}
 							>
 								<i className="bi bi-search"></i>
 							</button>
@@ -47,7 +62,7 @@ function Nav() {
 				</div>
 				<div className="col-md-3 d-flex justify-content-between align-items-center">
 					<Link
-						to={"/about"}
+						to={"/listazelja"}
 						className="col-md-6 d-flex justify-content-between"
 						style={{ textDecoration: "none" }}
 					>

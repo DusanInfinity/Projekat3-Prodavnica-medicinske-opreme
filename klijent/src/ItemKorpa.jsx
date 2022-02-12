@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Link, useParams } from "react-router-dom";
 
-function ItemKorpa({ proizvod, items, setItems }) {
+function ItemKorpa({ proizvod, onPlus, onMinus, items, setItems }) {
 	const [item, setItem] = useState([]);
 	const [kolicina, setKolicina] = useState(0);
 	const [ukupnaSumaProizvoda, setukupnaSumaProizvoda] = useState(0);
@@ -13,7 +13,17 @@ function ItemKorpa({ proizvod, items, setItems }) {
 
 	useEffect(() => {
 		setukupnaSumaProizvoda(item.price * kolicina);
-	}, [kolicina]);
+	}, [kolicina, item]);
+
+	useEffect(() => {
+		proizvod.ukupnaCena = ukupnaSumaProizvoda;
+	}, [ukupnaSumaProizvoda]);
+
+
+	const brisanje = (item) => {
+		const obrisani = items.filter((i) => i.productCode !== item.productCode);
+		setItems(obrisani);
+	}
 
 	const fetchItem = async () => {
 		const data = proizvod;
@@ -31,9 +41,7 @@ function ItemKorpa({ proizvod, items, setItems }) {
 				<button
 					className="btn"
 					style={{ outline: "none", fontSize: "1.1rem" }}
-					onClick={() => {
-						console.log("click");
-					}}
+					onClick={() => brisanje(item)}
 				>
 					<i className="bi bi-trash"></i>
 				</button>
@@ -66,6 +74,7 @@ function ItemKorpa({ proizvod, items, setItems }) {
 								onClick={() => {
 									if (kolicina > 0) {
 										setKolicina(kolicina - 1);
+										onMinus(item);
 									}
 								}}
 							>
@@ -92,6 +101,7 @@ function ItemKorpa({ proizvod, items, setItems }) {
 								onClick={() => {
 									if (kolicina < item.quantity) {
 										setKolicina(kolicina + 1);
+										onPlus(item);
 									}
 								}}
 							>

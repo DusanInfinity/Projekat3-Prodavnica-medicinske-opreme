@@ -4,11 +4,32 @@ import { Link } from "react-router-dom";
 import ItemKorpa from "./ItemKorpa";
 
 function Korpa() {
+	const [items, setItems] = useState([]);
+	const [ukupnaCena, setUkupnaCena] = useState(0);
+
 	useEffect(() => {
 		fetchItems();
 	}, []);
 
-	const [items, setItems] = useState([]);
+	useEffect(() => {
+		items.map((item) => {
+			setUkupnaCena(ukupnaCena - item.ukupnaCena);
+		})
+	}, [items])
+
+	const onPlus = (item) => {
+		const exists = items.find((x) => x.productCode === item.productCode);
+		if (exists) {
+			setUkupnaCena(ukupnaCena + item.price);
+		}
+	};
+
+	const onMinus = (item) => {
+		const exists = items.find((x) => x.productCode === item.productCode);
+		if (exists) {
+			setUkupnaCena(ukupnaCena - item.price);
+		}
+	};
 
 	const fetchItems = async () => {
 		const data = [
@@ -61,7 +82,7 @@ function Korpa() {
 								style={{
 									width: "10%",
 									display: "inline-block",
-                                    verticalAlign: "middle",
+									verticalAlign: "middle",
 								}}
 							>
 								Cena
@@ -90,14 +111,24 @@ function Korpa() {
 								<ItemKorpa
 									key={item.productCode}
 									proizvod={item}
-                                    items={items}
-                                    setItems={setItems}
+									cena={item.ukupnaCena}
+									onPlus={onPlus}
+									onMinus={onMinus}
+									items={items}
+									setItems={setItems}
 								/>
 							);
 						})}
 					</tbody>
 				</table>
-				<div className="col-md-2">asd</div>
+				<div className="col-md-2">
+					<h3>Pregled:</h3>
+					<hr />
+					<div>
+						<label>Medjuzbir</label>
+						<h2>{ukupnaCena} RSD</h2>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

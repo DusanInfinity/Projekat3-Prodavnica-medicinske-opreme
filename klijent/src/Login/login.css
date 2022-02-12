@@ -1,0 +1,13 @@
+.login-container{
+    display: flex;
+    flex-direction: row;
+    padding: 30px 10px;
+}
+
+.login-container input{
+    outline: none;
+    padding: 3px 10px;
+    font-size: 1.2rem;
+    border: 1px solid #d3e5ee;
+    border-radius: 5px;
+}
