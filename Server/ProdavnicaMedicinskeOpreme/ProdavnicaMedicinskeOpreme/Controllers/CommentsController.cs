@@ -48,7 +48,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             return Ok(comments);
         }
 
-
+        [Authorize]
         [HttpPost]
         [Route("DodajKomentar/{productCode}")]
         public async Task<IActionResult> DodajKomentar(int productCode, [FromBody] ProductComment comment)

@@ -7,7 +7,6 @@ using ProdavnicaMedicinskeOpreme.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace ProdavnicaMedicinskeOpreme.Controllers
@@ -23,11 +22,6 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
         public ProductController(MongoClient client)
         {
             _dbClient = client;
-        }
-
-        private IPAddress GetUserIP()
-        {
-            return HttpContext != null ? HttpContext.Connection.RemoteIpAddress : null;
         }
 
         [AllowAnonymous]
