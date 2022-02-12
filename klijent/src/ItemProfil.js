@@ -2,10 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Link, useParams } from "react-router-dom";
 import KomentariProfil from "./komentariProfil";
+import ApiClient from "./Global/apiClient";
 
 function ItemProfil() {
-	let { id } = useParams();
 
+	const api = new ApiClient();
+
+	let { id } = useParams();
 	useEffect(() => {
 		fetchItem();
 	}, []);
@@ -13,17 +16,7 @@ function ItemProfil() {
 	const [item, setItem] = useState([]);
 
 	const fetchItem = async () => {
-		// api za fetch item
-
-		const data = {
-			productCode: 1,
-			name: "Bel London poklon set",
-			price: 12000,
-			quantity: 10,
-			description: "deskripcija",
-			image: "https://shop.lilly.rs/media/catalog/product/cache/e9fe89bb0d3d5e05736d64f06cc6558c/5/0/5060693811968_1.jpg",
-			category: "set",
-		};
+		const data = await api.produkti.vratiPodatkeProdukta(id);
 
 		setItem(data);
 	};

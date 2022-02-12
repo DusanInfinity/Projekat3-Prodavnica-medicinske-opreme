@@ -1,31 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import ApiClient from "./Global/apiClient";
 
 function KomentariProfil({ productCode }) {
+	const api = new ApiClient();
+
 	const [komentari, setKomentare] = useState([]);
 	const [showForm, setShowForm] = useState(false);
 
 	useEffect(() => {
 		fetchComments();
-	}, []);
+	}, [productCode]);
 
 	const fetchComments = async () => {
-		const comments = [
-			{
-				name: "Stefan",
-				email: "stefan@gmail.com",
-				text: "text komentara malo duzi",
-				date: "2022-02-10T13:45:30",
-			},
-			{
-				name: "Dusan",
-				email: "dusan@gmail.com",
-				text: "text komentara malo duzi malo duzi",
-				date: "2022-02-09T13:45:30",
-			},
-		];
-
-		setKomentare(comments);
+		try {
+			if (productCode) {
+				const comments = await api.komentari.vratiKomentare(
+					productCode
+				);
+				console.log(comments);
+				setKomentare(comments);
+			}
+		} catch (e) {
+			alert(`Greska ${e.message}`);
+		}
 	};
 
 	const prebaciVreme = (vreme) => {
@@ -38,11 +36,26 @@ function KomentariProfil({ productCode }) {
 	const DodajSvojKomentar = () => {
 		const [text, setText] = useState("");
 
-		const posaljiKomentar = () => {
-			console.log(text);
-			// api za postavljanje komentara
-			// korisnik mora da je prijavljen da postavlja komentare
-		}
+		const posaljiKomentar = async () => {
+			const user = sessionStorage.getItem("user");
+			if(user){
+				let data = JSON.parse(user);
+				const comment = {
+					name: `${data.firstname} ${data.lastname}`,
+					email: data.email,
+					text: text,
+					date: new Date(),
+				}
+				try{
+					api.setHeader('Content-Type', 'application/json');
+					await api.komentari.dodajKomentar(productCode, comment);
+				}
+				catch(e){
+					alert(e.message);
+				}
+			}
+			
+		};
 
 		return (
 			<div className="col-md-12 d-flex flex-column align-items-center">
@@ -53,7 +66,12 @@ function KomentariProfil({ productCode }) {
 					className="col-md-10 mt-3"
 					onChange={(e) => setText(e.target.value)}
 				></textarea>
-				<button className="btn btn-primary col-sm-2 mt-4" onClick={posaljiKomentar}>Postavi komentar</button>
+				<button
+					className="btn btn-primary col-sm-2 mt-4"
+					onClick={posaljiKomentar}
+				>
+					Postavi komentar
+				</button>
 			</div>
 		);
 	};
@@ -67,11 +85,9 @@ function KomentariProfil({ productCode }) {
 					className="btn btn-outline-primary"
 					onClick={(e) => {
 						setShowForm(!showForm);
-						if(!showForm){
+						if (!showForm) {
 							e.target.innerText = "Zatvorite formu";
-						}
-						else{
-							
+						} else {
 							e.target.innerText = "Dodaj svoj komentar";
 						}
 					}}
@@ -84,7 +100,7 @@ function KomentariProfil({ productCode }) {
 			{komentari.map((komentar) => {
 				return (
 					<div
-						key={komentar.email}
+						key={komentar.email + komentar.date}
 						className="komentar-profil"
 						style={{}}
 					>
@@ -101,6 +117,9 @@ function KomentariProfil({ productCode }) {
 					</div>
 				);
 			})}
+			{komentari.length === 0 && (
+				<h4 style={{ textAlign: "center" }}>Proizvod nema komentara</h4>
+			)}
 		</div>
 	);
 }
