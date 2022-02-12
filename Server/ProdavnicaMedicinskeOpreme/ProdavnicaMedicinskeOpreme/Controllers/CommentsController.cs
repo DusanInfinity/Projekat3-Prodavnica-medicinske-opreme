@@ -75,7 +75,8 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                 await collectionComments.InsertOneAsync(comment);
 
                 product.Comments.Add(new MongoDBRef("komentari", comment._id));
-                await collectionProducts.ReplaceOneAsync(p => p._id == product._id, product); // u staroj verziji collection.Save(obj);
+                var updateQuery = Builders<Product>.Update.Set("Comments", product.Comments);
+                collectionProducts.UpdateOne(p => p._id == product._id, updateQuery);
             }
             catch (Exception ex)
             {

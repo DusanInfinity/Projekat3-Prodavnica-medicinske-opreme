@@ -89,6 +89,8 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             return Ok(products);
         }
 
+        // TO-DO vrati produkte random za pocetnu stranu (8)
+
         [AllowAnonymous]
         [HttpGet]
         [Route("PretraziProdukte/{searchString}")]
