@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { createFactory, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import "./registracija.css";
+import ApiClient from "../Global/apiClient";
 
 function Registracija() {
+
+	
+	const api = new ApiClient()
 
     const [ime, setIme] = useState("");
     const [prezime, setPrezime] = useState("");
@@ -12,16 +16,27 @@ function Registracija() {
     const [email, setEmail] = useState("");
     const [lozinka, setLozinka] = useState("");
 
-    const registruj = () => {
+    const registruj = async () => {
         const korisnik = {
             firstname: ime,
             lastname: prezime,
             address: adresa,
-            phonenumber: telefon,
+            phoneNumber: telefon,
             email: email,
-            password: lozinka
+            password: lozinka,
         }
-        console.log(korisnik);
+
+		try{
+			api.setHeader('Content-Type', 'application/json');
+			const user = await api.korisnik.registrujSe(korisnik);
+			console.log(user);
+			
+		}
+		catch(e){
+			alert(e.message);
+		}
+		
+		// odvede na login stranicu ako je uspesno
     }
 
 	return (

@@ -12,18 +12,50 @@ function ItemKorpa({ proizvod, onPlus, onMinus, items, setItems }) {
 	}, []);
 
 	useEffect(() => {
-		setukupnaSumaProizvoda(item.price * kolicina);
-	}, [kolicina, item]);
-
-	useEffect(() => {
 		proizvod.ukupnaCena = ukupnaSumaProizvoda;
 	}, [ukupnaSumaProizvoda]);
 
+	useEffect(() => {
+		updateLocalStorage();
+		setukupnaSumaProizvoda(item.price * kolicina);
+		items.map((el) => {
+			if(el.productCode === item.productCode){
+				el.kolicina = kolicina;
+			}
+		})
+	}, [kolicina]);
+
+	useEffect(() => {
+		setKolicina(proizvod.kolicina);
+		setukupnaSumaProizvoda(item.price * kolicina);
+	}, [item]);
+
+	const updateLocalStorage = () => {
+		let local = JSON.parse(localStorage.getItem("korpa_proizvodi"));
+		let exists = local.find((el) => el.productCode === item.productCode);
+		if (exists) {
+			exists.kolicina = kolicina;
+			localStorage.setItem("korpa_proizvodi", JSON.stringify(local));
+		}
+	};
+
+	const deleteFromLocalStorage = () => {
+		let local = JSON.parse(localStorage.getItem("korpa_proizvodi"));
+		let exists = local.find((el) => el.productCode === item.productCode);
+		if(exists){
+			local = local.filter(el => el.productCode !== item.productCode);
+			localStorage.setItem("korpa_proizvodi", JSON.stringify(local));
+		}
+	};
+
 
 	const brisanje = (item) => {
-		const obrisani = items.filter((i) => i.productCode !== item.productCode);
+		const obrisani = items.filter(
+			(i) => i.productCode !== item.productCode
+		);
 		setItems(obrisani);
-	}
+		deleteFromLocalStorage();
+	};
 
 	const fetchItem = async () => {
 		const data = proizvod;

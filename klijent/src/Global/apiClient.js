@@ -4,7 +4,7 @@ import { HttpClient } from "./httpClient.js";
 class ApiClient extends HttpClient {
   constructor(hdrs = authHeader()) {
     super({
-      baseURL: 'https://localhost:46232/',
+      baseURL: 'https://localhost:44369/',
       headers: hdrs
     });
   }
@@ -15,7 +15,6 @@ class ApiClient extends HttpClient {
       vratiSveProdukte: () => this.get(`Product/VratiSveProdukte`),
       vratiProdukteUKategoriji: (category) => this.get(`Product/VratiProdukteUKategoriji/${category}`),
       pretraziProdukte: (searchString) => this.get(`Product/PretraziProdukte/${searchString}`),
-
 
       dodajProdukt: (product) => this.post(`Product/DodajProdukt`, product),
       azurirajProdukt: (product) => this.put(`Product/AzurirajProdukt`, product),
