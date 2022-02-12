@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using ProdavnicaMedicinskeOpreme.Data;
+using ProdavnicaMedicinskeOpreme.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ProdavnicaMedicinskeOpreme.Data;
-using ProdavnicaMedicinskeOpreme.Models;
 
 namespace ProdavnicaMedicinskeOpreme.Controllers
 {

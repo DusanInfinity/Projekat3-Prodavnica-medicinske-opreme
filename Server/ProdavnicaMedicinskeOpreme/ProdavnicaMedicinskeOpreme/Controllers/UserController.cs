@@ -22,16 +22,16 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [Route("GetUser/{username}")]
-        public IActionResult GetUser(string username)
+        [Route("GetUser/{email}")]
+        public IActionResult GetUser(string email)
         {
             User user;
             try
             {
-                user = _service.GetUser(username);
+                user = _service.GetUser(email);
 
                 if (user == null)
-                    return BadRequest(new { message = $"Korisnik sa username-om {username} nije pronadjen!" });
+                    return BadRequest(new { message = $"Korisnik sa email-om {email} nije pronadjen!" });
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
         {
             try
             {
-                var token = _service.Authenticate(user.Username, user.Password);
+                var token = _service.Authenticate(user.Email, user.Password);
 
                 if (token == null)
                     return Unauthorized(new { message = "Niste uneli ispravne podatke za login!" });

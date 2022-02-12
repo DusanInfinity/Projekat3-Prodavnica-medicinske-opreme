@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ProdavnicaMedicinskeOpreme.Services
 {
-    public class UserService
+    public class UserService // Credits: https://medium.com/nerd-for-tech/net-jwt-authentication-with-mongodb-9bca4a33d3f0
     {
         private readonly IMongoCollection<User> users;
 
@@ -18,9 +18,9 @@ namespace ProdavnicaMedicinskeOpreme.Services
             users = db.GetCollection<User>("korisnici");
         }
 
-        public User GetUser(string username)
+        public User GetUser(string email)
         {
-            return users.Find<User>(u => u.Username == username).FirstOrDefault();
+            return users.Find<User>(u => u.Email == email).FirstOrDefault();
         }
 
         public User CreateUser(User user)
@@ -29,9 +29,9 @@ namespace ProdavnicaMedicinskeOpreme.Services
             return user;
         }
 
-        public string Authenticate(string username, string password)
+        public string Authenticate(string email, string password)
         {
-            User user = users.Find(u => u.Username == username && u.Password == password).FirstOrDefault();
+            User user = users.Find(u => u.Email == email && u.Password == password).FirstOrDefault();
 
             if (user == null)
                 return null;
@@ -43,7 +43,7 @@ namespace ProdavnicaMedicinskeOpreme.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, username),
+                    new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Role, user.Role)
                 }),
 
