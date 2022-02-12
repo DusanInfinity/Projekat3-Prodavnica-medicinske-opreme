@@ -1,8 +1,8 @@
 export function authHeader() {
-    let user = sessionStorage.getItem('authUser');
+    let token = sessionStorage.getItem('token');
 
-    if (user) {
-        return { 'Authorization': 'Basic ' + user };
+    if (token) {
+        return { 'Authorization': 'Bearer ' + token };
     } else {
         return {};
     }
