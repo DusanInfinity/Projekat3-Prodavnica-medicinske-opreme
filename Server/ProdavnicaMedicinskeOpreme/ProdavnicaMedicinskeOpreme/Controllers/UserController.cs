@@ -20,8 +20,8 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             _service = service;
         }
 
-        [HttpGet]
         [Authorize(Roles = "Admin")]
+        [HttpGet]
         [Route("GetUser/{email}")]
         public IActionResult GetUser(string email)
         {

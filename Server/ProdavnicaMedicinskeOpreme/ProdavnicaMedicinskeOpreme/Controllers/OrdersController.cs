@@ -3,6 +3,7 @@ using MongoDB.Driver;
 using ProdavnicaMedicinskeOpreme.Data;
 using ProdavnicaMedicinskeOpreme.Models;
 using System;
+using System.Collections.Generic;
 
 namespace ProdavnicaMedicinskeOpreme.Controllers
 {
@@ -38,6 +39,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                         return BadRequest(new { message = $"Doslo je do greske prilikom kupovine produkta sa Vaseg naloga, pokusajte kasnije!" });
                 }
 
+                Dictionary<OrderedProduct, Product> products = new Dictionary<OrderedProduct, Product>();
                 foreach (OrderedProduct op in order.OrderedProducts)
                 {
                     var product = collectionProducts.Find(c => c._id == op.Product.Id).FirstOrDefault();
@@ -45,7 +47,20 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                     if (product == null)
                         return BadRequest(new { message = $"Jedan od porucenih produkata nije pronadjen!" });
 
+                    if (product.Quantity < op.Quantity)
+                        return BadRequest(new { message = $"Nema dovolje kolicine produkta {product.Name} na stanju!" });
+
                     op.Product = new MongoDBRef("produkti", product._id);
+                    products.Add(op, product);
+                }
+
+                foreach (var kvp in products) // transakcija bi bila bolje resenje
+                {
+                    OrderedProduct op = kvp.Key;
+                    Product product = kvp.Value;
+                    product.Quantity -= op.Quantity;
+                    var updateQuery = Builders<Product>.Update.Set("Quantity", product.Quantity);
+                    collectionProducts.UpdateOne(p => p._id == product._id, updateQuery);
                 }
 
                 collectionOrders.InsertOne(order);

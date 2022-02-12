@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using ProdavnicaMedicinskeOpreme.Data;
 using ProdavnicaMedicinskeOpreme.Models;
@@ -77,7 +78,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
 
             return Ok(comment);
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("ObrisiKomentar/{productCode}/{name}/{date}")]
         public async Task<IActionResult> ObrisiKomentar(int productCode, string name, DateTime date)

@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using ProdavnicaMedicinskeOpreme.Data;
+using ProdavnicaMedicinskeOpreme.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using ProdavnicaMedicinskeOpreme.Data;
-using ProdavnicaMedicinskeOpreme.Models;
 
 namespace ProdavnicaMedicinskeOpreme.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("[controller]")]
     public class ProductController : ControllerBase
@@ -28,6 +30,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             return HttpContext != null ? HttpContext.Connection.RemoteIpAddress : null;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("VratiPodatkeProdukta/{productCode}")]
         public async Task<IActionResult> VratiPodatkeProdukta(int productCode)
@@ -51,6 +54,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             return Ok(product);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("VratiSveProdukte")]
         public async Task<IActionResult> VratiSveProdukte()
@@ -70,7 +74,6 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
 
             return Ok(products);
         }
-
 
         [HttpPost]
         [Route("DodajProdukt")]
