@@ -13,6 +13,8 @@ function ItemProfil() {
 	const [item, setItem] = useState([]);
 
 	const fetchItem = async () => {
+		// api za fetch item
+
 		const data = {
 			productCode: 1,
 			name: "Bel London poklon set",
@@ -150,28 +152,65 @@ function ItemProfil() {
 							background: "#fe7234",
 							fontSize: "1.2rem",
 						}}
+						onClick={() => {
+							if (kolicina === 0) {
+								return;
+							}
+							let korpaProizvodi =
+								localStorage.getItem("korpa_proizvodi");
+							if (korpaProizvodi) {
+								korpaProizvodi = JSON.parse(korpaProizvodi);
+								let exists = korpaProizvodi.find(
+									(el) => el.productCode === item.productCode
+								);
+								if (exists) {
+									exists.kolicina = kolicina;
+								} else {
+									korpaProizvodi.push({
+										productCode: item.productCode,
+										kolicina: kolicina,
+									});
+								}
+							} else {
+								korpaProizvodi = [];
+								korpaProizvodi.push({
+									productCode: item.productCode,
+									kolicina: kolicina,
+								});
+							}
+
+							localStorage.setItem(
+								"korpa_proizvodi",
+								JSON.stringify(korpaProizvodi)
+							);
+						}}
 					>
 						<i className="bi bi-cart me-2"></i>Dodaj u korpu
 					</button>
-					<button
-						className="btn btn-outline-primary"
-						style={{ fontSize: "1.2rem" }}
-					>
-						<i className="bi bi-heart"></i>
-					</button>
+					<DodajUListuZelja />
 				</div>
 			);
 		} else {
 			return (
-				<button
-					className="btn btn-outline-primary"
-					style={{ fontSize: "1.2rem" }}
-				>
-					<i className="bi bi-heart"></i>
-				</button>
+				<DodajUListuZelja />
 			);
 		}
 	}
+
+	const DodajUListuZelja = () => {
+		return (
+			<button
+				className="btn btn-outline-primary"
+				style={{ fontSize: "1.2rem" }}
+				onClick={() => {
+					console.log("dodaj u listu zelja");
+					// api za dodavanje proizvoda u listu zelja
+				}}
+			>
+				<i className="bi bi-heart"></i>
+			</button>
+		);
+	};
 
 	return (
 		<div className="col-md-8 d-flex flex-column">

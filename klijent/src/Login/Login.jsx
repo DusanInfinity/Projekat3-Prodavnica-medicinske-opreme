@@ -2,19 +2,45 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../App.css";
 import "./login.css";
+import ApiClient from "../Global/apiClient";
 
 function Login() {
-
 	const [email, setEmail] = useState("");
 	const [lozinka, setLozinka] = useState("");
-	
-	const prijaviSe = () => {
-		const korisnik = {
-			email: email,
-			password: lozinka
+
+	const api = new ApiClient()
+
+	const prijaviSe = async () => {
+		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if (email === "") {
+			alert("Niste uneli email.");
+		} else if (!email.match(mailformat)) {
+			alert("Niste uneli validan email.");
+		} else {
+			if (lozinka === "") {
+				alert("Niste uneli lozinku");
+			} else {
+				const korisnik = {
+					email: email,
+					password: lozinka,
+				};
+				
+				try{
+					api.setHeader('Content-Type', 'application/json');
+					let data = await api.korisnik.ulogujSe(korisnik);
+					console.log(data);
+					
+    				sessionStorage.setItem('token', data.token);
+					sessionStorage.setItem('user', JSON.stringify(data.user));
+				}
+				catch(e){
+					sessionStorage.removeItem('user');
+    				sessionStorage.removeItem('token');
+					alert(`greska ${e.message}`);
+				}
+			}
 		}
-		console.log(korisnik);
-	}
+	};
 
 	let navigate = useNavigate();
 	const routeChange = () => {
@@ -33,7 +59,9 @@ function Login() {
 						name="email"
 						id=""
 						className="col-md-12"
-						onChange={(e) => {setEmail(e.target.value)}}
+						onChange={(e) => {
+							setEmail(e.target.value);
+						}}
 					/>
 				</div>
 				<div className="col-md-9 mt-5">
@@ -43,11 +71,15 @@ function Login() {
 						name="password"
 						id=""
 						className="col-md-12"
-						onChange={(e) => {setLozinka(e.target.value)}}
+						onChange={(e) => {
+							setLozinka(e.target.value);
+						}}
 					/>
 				</div>
 				<div className="col-md-12 mt-5 ps-2">
-					<button className="btn btn-primary" onClick={prijaviSe}>PRIJAVI SE</button>
+					<button className="btn btn-primary" onClick={prijaviSe}>
+						PRIJAVI SE
+					</button>
 				</div>
 			</div>
 
@@ -61,7 +93,10 @@ function Login() {
 						zelja i mogli da izvrsite kupovinu.
 					</p>
 					<div>
-						<button className="btn btn-primary mt-3" onClick={routeChange}>
+						<button
+							className="btn btn-primary mt-3"
+							onClick={routeChange}
+						>
 							REGISTRACIJA
 						</button>
 					</div>
