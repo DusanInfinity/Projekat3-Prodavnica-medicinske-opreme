@@ -11,6 +11,6 @@ namespace ProdavnicaMedicinskeOpreme.Models
         public string Email { get; set; }
         public string Password { internal get; set; } // internal get sprecava serijalizaciju i slanje podataka klijentu
         public string Role { get; set; }
-        [JsonIgnore] public List<MongoDBRef> Orders { get; set; }
+        [JsonIgnore] public List<MongoDBRef> Orders { get; set; } = new List<MongoDBRef>();
     }
 }
