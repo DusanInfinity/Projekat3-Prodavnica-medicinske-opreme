@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using ProdavnicaMedicinskeOpreme.Data;
 using ProdavnicaMedicinskeOpreme.Models;
@@ -69,6 +68,58 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             return Ok(products);
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("VratiProdukteUKategoriji/{category}")]
+        public async Task<IActionResult> VratiProdukteUKategoriji(string category)
+        {
+            var products = new List<Product>();
+            try
+            {
+                var db = _dbClient.GetDatabase("prodavnica");
+                var collection = db.GetCollection<Product>("produkti");
+
+                products = await (await collection.FindAsync(p => p.Category == category)).ToListAsync();
+            }
+            catch
+            {
+                return BadRequest(new { message = $"Doslo je do greske prilikom pribavljanja produkata iz kategorije {category}!" });
+            }
+
+            return Ok(products);
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("PretraziProdukte/{searchString}")]
+        public async Task<IActionResult> PretraziProdukte(string searchString)
+        {
+            var products = new List<Product>();
+            try
+            {
+                List<string> strings = searchString.Split(" ").ToList();
+                if (strings.Count < 1)
+                    return Ok(products);
+
+                for (int i = 0; i < strings.Count; i++)
+                    strings[i] = strings[i].ToLower();
+
+                var db = _dbClient.GetDatabase("prodavnica");
+                var collection = db.GetCollection<Product>("produkti");
+
+                //var filter = Builders<Product>.Filter.AnyIn("Name", strings);
+                //products = await (await collection.FindAsync(filter)).ToListAsync();
+
+                products = collection.AsQueryable<Product>().Where(p => strings.Contains(p.Name.ToLower())).ToList();
+            }
+            catch
+            {
+                return BadRequest(new { message = $"Doslo je do greske prilikom pretrage produkata!" });
+            }
+
+            return Ok(products);
+        }
+
         [HttpPost]
         [Route("DodajProdukt")]
         public async Task<IActionResult> DodajProdukt([FromBody] Product newProduct)
@@ -103,8 +154,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                                                           .Set("Price", newProduct.Price)
                                                           .Set("Quantity", newProduct.Quantity)
                                                           .Set("Description", newProduct.Description)
-                                                          .Set("Image", newProduct.Image)
-                                                          .Set("Tags", BsonValue.Create(newProduct.Tags.ToList())); // ili samo newProduct.Tags
+                                                          .Set("Image", newProduct.Image);
 
                 var result = await collection.UpdateOneAsync(p => p.ProductCode == newProduct.ProductCode, updateQuery);
 

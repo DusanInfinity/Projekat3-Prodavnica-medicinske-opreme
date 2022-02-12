@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using ProdavnicaMedicinskeOpreme.Data;
 using ProdavnicaMedicinskeOpreme.Models;
 using System;
@@ -38,7 +39,12 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                 if (product == null)
                     return BadRequest(new { message = "Produkt sa datim kodom nije pronadjen!" });
 
-                comments = await (await collectionComments.FindAsync(c => c.Product.Id == product._id)).ToListAsync();
+                //comments = await (await collectionComments.FindAsync(c => c.Product.Id == product._id)).ToListAsync();
+
+                comments = await (from comment in collectionComments.AsQueryable<ProductComment>()
+                                  where comment.Product.Id == product._id
+                                  orderby comment.Date descending
+                                  select comment).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -65,6 +71,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                     return BadRequest(new { message = "Produkt sa datim kodom nije pronadjen!" });
 
                 comment.Product = new MongoDBRef("produkti", product._id);
+                comment.Date = DateTime.Now;
                 await collectionComments.InsertOneAsync(comment);
 
                 product.Comments.Add(new MongoDBRef("komentari", comment._id));
