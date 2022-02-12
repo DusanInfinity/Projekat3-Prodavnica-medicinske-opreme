@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Item from "../Item";
 import "../App.css";
+import ApiClient from "../Global/apiClient";
+import { Alert } from "bootstrap";
 
 
 function Search() {
+	const api = new ApiClient();
 
 	let { parametri } = useParams();
     const [items, setItems] = useState([]);
@@ -14,6 +17,14 @@ function Search() {
     }, []);
 
     const fetchItems = () => {
+		console.log(parametri);
+
+		try{
+			let data = api.produkti.pretraziProdukte(parametri);
+			console.log(data);
+		}catch(e){
+			alert(e.message);
+		}
         const data = [
 			{
 				productCode: 1,

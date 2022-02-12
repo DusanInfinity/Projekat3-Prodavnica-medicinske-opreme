@@ -8,7 +8,7 @@ function Login() {
 	const [email, setEmail] = useState("");
 	const [lozinka, setLozinka] = useState("");
 
-	const api = new ApiClient()
+	const api = new ApiClient();
 
 	const prijaviSe = async () => {
 		var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -24,19 +24,20 @@ function Login() {
 					email: email,
 					password: lozinka,
 				};
-				
-				try{
-					api.setHeader('Content-Type', 'application/json');
+
+				try {
+					api.setHeader("Content-Type", "application/json");
 					let data = await api.korisnik.ulogujSe(korisnik);
-					
-    				sessionStorage.setItem('token', data.token);
-					sessionStorage.setItem('user', JSON.stringify(data.user));
+
+					sessionStorage.setItem("token", data.token);
+					sessionStorage.setItem("user", JSON.stringify(data.user));
 					navigate("/");
-				}
-				catch(e){
-					sessionStorage.removeItem('user');
-    				sessionStorage.removeItem('token');
-					alert(`Greska pri logovanju, pokusajte ponovo. ${e.message}`);
+				} catch (e) {
+					sessionStorage.removeItem("user");
+					sessionStorage.removeItem("token");
+					alert(
+						`Greska pri logovanju, pokusajte ponovo. ${e.message}`
+					);
 				}
 			}
 		}
@@ -89,8 +90,8 @@ function Login() {
 				<div className="col-md-12 d-flex flex-column p-5 justify-content-between">
 					<h2>Niste registrovani?</h2>
 					<p className="ps-2 mt-3" style={{ color: "gray" }}>
-						Kreirajte nalog kako bi lakse mogli da koristite listu
-						zelja i mogli da izvrsite kupovinu.
+						Kreirajte nalog kako bi lakse mogli da izvrsite kupovinu
+						i pogledali prethodne porudzbine.
 					</p>
 					<div>
 						<button

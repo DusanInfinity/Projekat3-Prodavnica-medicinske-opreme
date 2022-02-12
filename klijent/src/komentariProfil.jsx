@@ -28,7 +28,7 @@ function KomentariProfil({ productCode }) {
 		//2021-06-02T16:44:08
 		let vremeLista = vreme.toString().split("T");
 		vremeLista[0] = vremeLista[0].split("-").reverse().join(".");
-		return vremeLista[0];
+		return `${vremeLista[0]} ${vremeLista[1].split(".")[0]}`;
 	};
 
 	const DodajSvojKomentar = () => {

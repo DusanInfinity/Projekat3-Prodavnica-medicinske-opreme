@@ -61,18 +61,6 @@ function Item({ proizvod }) {
 						></i>
 						Dodaj u korpu
 					</button>
-					<button
-						className="btn btn-info mx-2"
-						onClick={() => {
-							console.log("dodaj u listu zelja");
-							// api za dodavanje proizvoda u listu zelja
-						}}
-					>
-						<i
-							className="bi bi-heart"
-							style={{ fontSize: "1.3rem" }}
-						></i>
-					</button>
 				</div>
 			</div>
 		</div>

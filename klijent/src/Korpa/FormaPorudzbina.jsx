@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import "../App.css";
 import ApiClient from "../Global/apiClient";
 
-function FormaPorudzbina({ otvoriFormu, items }) {
+function FormaPorudzbina({ otvoriFormu, items, isprazniKorpu }) {
+
+	let navigate = useNavigate();
 
 	const api = new ApiClient();
 
@@ -94,6 +97,9 @@ function FormaPorudzbina({ otvoriFormu, items }) {
 							try{
 								api.setHeader('Content-Type', 'application/json')
 								await api.porudzbine.kupiProizvode(order);
+								alert("Uspesna porudzbina");
+								isprazniKorpu();
+								navigate("/");
 							}catch(e){
 								alert(e.message);
 							}

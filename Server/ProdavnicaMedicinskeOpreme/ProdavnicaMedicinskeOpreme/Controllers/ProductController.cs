@@ -130,6 +130,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                 var db = _dbClient.GetDatabase("prodavnica");
                 var collection = db.GetCollection<Product>("produkti");
 
+
                 //var filter = Builders<Product>.Filter.AnyIn("Name", strings);
                 //products = await (await collection.FindAsync(filter)).ToListAsync();
 

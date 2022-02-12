@@ -39,52 +39,31 @@ function Korpa() {
 	};
 
 	const fetchItems = async () => {
-		let produktiExists = localStorage.getItem("korpa_proizvodi");
-		if (produktiExists) {
-			produktiExists = JSON.parse(produktiExists);
-			let novi_objekti = [];
-			if (produktiExists.length > 0) {
-				produktiExists.forEach(async (el) => {
-					try {
-						let novi_objekat =
-							await api.produkti.vratiPodatkeProdukta(el.productCode);
-						novi_objekat.kolicina = el.kolicina;
-						novi_objekti.push(novi_objekat);
-						console.log(novi_objekti);
-					} catch (e) {
-						alert(e.message);
-					}
-				});
-				console.log(novi_objekti);
+		let produktiExists = JSON.parse(
+			localStorage.getItem("korpa_proizvodi")
+		);
+		let novi_objekti = [];
+
+		if (!produktiExists) return;
+		for (const el of produktiExists) {
+			try {
+				let pom = await api.produkti.vratiPodatkeProdukta(
+					el.productCode
+				);
+				pom.kolicina = el.kolicina;
+				novi_objekti.push(pom);
+			} catch (e) {
+				alert(e.message);
 			}
-			setItems(novi_objekti);
-		} else {
-			console.log("korpa je prazna");
 		}
 
-		// const data = [
-		// 	{
-		// 		productCode: 1,
-		// 		name: "Bel London poklon set",
-		// 		price: 12000,
-		// 		quantity: 10,
-		// 		description: "deskripcija",
-		// 		image: "https://shop.lilly.rs/media/catalog/product/cache/e9fe89bb0d3d5e05736d64f06cc6558c/5/0/5060693811968_1.jpg",
-		// 		category: "set",
-		// 	},
-		// 	{
-		// 		productCode: 2,
-		// 		name: "Neki proba proizvod asdasdasdasdasd",
-		// 		price: 13000,
-		// 		quantity: 10,
-		// 		description: "deskripcija",
-		// 		image: "https://shop.lilly.rs/media/catalog/product/cache/e9fe89bb0d3d5e05736d64f06cc6558c/5/0/5060693811968_1.jpg",
-		// 		category: "proba",
-		// 	},
-		// ];
-
-		// setItems(data);
+		setItems(novi_objekti);
 	};
+
+	const isprazniKorpu = () => {
+		setItems([]);
+		localStorage.removeItem("korpa_proizvodi");
+	}
 
 	return (
 		<div className="col-md-8 d-flex flex-column align-items-center">
@@ -181,7 +160,7 @@ function Korpa() {
 					</div>
 				</div>
 			</div>
-			<FormaPorudzbina otvoriFormu={otvoriFormu} items={items} />
+			<FormaPorudzbina otvoriFormu={otvoriFormu} items={items} isprazniKorpu={isprazniKorpu}/>
 		</div>
 	);
 }

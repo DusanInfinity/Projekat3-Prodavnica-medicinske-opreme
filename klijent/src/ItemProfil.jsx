@@ -3,22 +3,38 @@ import "./App.css";
 import { Link, useParams } from "react-router-dom";
 import KomentariProfil from "./komentariProfil";
 import ApiClient from "./Global/apiClient";
+import { Modal, Button } from "react-bootstrap";
 
 function ItemProfil() {
-
 	const api = new ApiClient();
 
 	let { id } = useParams();
-	
+
+	const [item, setItem] = useState([]);
+
+	const kategorije = [
+		"Parfemi",
+		"Deciji kutak",
+		"Muski kutak",
+		"Lekovi",
+		"Zenski kutak",
+	];
+
+	//modal stvari
+	const [showIzmeni, setShowIzmeni] = useState(false);
+	const handleCloseIzmeni = () => setShowIzmeni(false);
+	const handleShowIzmeni = () => setShowIzmeni(true);
+
+	const [showObrisi, setShowObrisi] = useState(false);
+	const handleCloseObrisi = () => setShowObrisi(false);
+	const handleShowObrisi = () => setShowObrisi(true);
+
 	useEffect(() => {
 		fetchItem();
 	}, []);
 
-	const [item, setItem] = useState([]);
-
 	const fetchItem = async () => {
 		const data = await api.produkti.vratiPodatkeProdukta(id);
-
 		setItem(data);
 	};
 
@@ -181,28 +197,181 @@ function ItemProfil() {
 					>
 						<i className="bi bi-cart me-2"></i>Dodaj u korpu
 					</button>
-					<DodajUListuZelja />
 				</div>
 			);
 		} else {
-			return (
-				<DodajUListuZelja />
-			);
+			return null;
 		}
 	}
 
-	const DodajUListuZelja = () => {
+	const AdminFunkcionalnosti = () => {
+		const data = sessionStorage.getItem("user");
+		if (data) {
+			const user = JSON.parse(data);
+			if (user.role === "Admin") {
+				return (
+					<div>
+						<h4 style={{ textAlign: "center" }}>
+							Admin funkcionalnosti
+						</h4>
+						<div className="col-md-12 d-flex justify-content-around mt-3">
+							<button
+								className="btn btn-warning"
+								onClick={handleShowIzmeni}
+							>
+								Izmeni proizvod
+							</button>
+							<button
+								className="btn btn-danger"
+								onClick={handleShowObrisi}
+							>
+								Obrisi proizvod
+							</button>
+						</div>
+					</div>
+				);
+			}
+			return null;
+		} else {
+			return null;
+		}
+	};
+
+	const ModalIzmeni = () => {
+		const [naziv, setNaziv] = useState(item.name);
+		const [cena, setCena] = useState(item.price);
+		const [deskripcija, setDeskripcija] = useState(item.description);
+		const [kolicina, setKolicina] = useState(item.quantity);
+		const [kategorija, setKategorija] = useState(item.category);
+
 		return (
-			<button
-				className="btn btn-outline-primary"
-				style={{ fontSize: "1.2rem" }}
-				onClick={() => {
-					console.log("dodaj u listu zelja");
-					// api za dodavanje proizvoda u listu zelja
-				}}
-			>
-				<i className="bi bi-heart"></i>
-			</button>
+			<Modal show={showIzmeni} onHide={handleCloseIzmeni}>
+				<Modal.Header closeButton>
+					<Modal.Title>Izmena proizvoda {item.name}</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Naziv</label>
+						<input
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setNaziv(e.target.value)}
+							value={naziv}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Cena</label>
+						<input
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setCena(e.target.value)}
+							value={cena}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Deskripcija</label>
+						<textarea
+							type="text"
+							className="col-md-8"
+							onChange={(e) => setDeskripcija(e.target.value)}
+							value={deskripcija}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Kolicina</label>
+						<input
+							type="number"
+							className="col-md-8"
+							onChange={(e) => setKolicina(e.target.value)}
+							value={kolicina}
+						/>
+					</div>
+					<div className="col-md-12 d-flex justify-content-between mb-3">
+						<label>Kategorija</label>
+						<select
+							className="col-md-8"
+							style={{
+								textDecoration: "none",
+								background: "white",
+								outline: "none",
+							}}
+							onChange={(e) => {
+								setKategorija(e.target.value);
+							}}
+						>
+							{kategorije.map((kat) => {
+								if (kat === kategorija) {
+									return (
+										<option key={kat} value={kat} selected>
+											{kat}
+										</option>
+									);
+								}
+								return (
+									<option key={kat} value={kat}>
+										{kat}
+									</option>
+								);
+							})}
+						</select>
+					</div>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleCloseIzmeni}>
+						Zatvori
+					</Button>
+					<Button
+						variant="primary"
+						onClick={async () => {
+							handleCloseIzmeni();
+							const product = {
+								productCode: item.productCode,
+								name: naziv,
+								price: cena,
+								quantity: kolicina,
+								description: deskripcija,
+								category: kategorija,
+								image: item.image,
+							};
+							try {
+								api.setHeader(
+									"Content-Type",
+									"application/json"
+								);
+								console.log(product);
+								await api.produkti.azurirajProdukt(product);
+								alert("Produkt uspesno azuriran");
+								window.location.reload();
+							} catch (e) {
+								alert(e.message);
+							}
+						}}
+					>
+						Sacuvaj izmene
+					</Button>
+				</Modal.Footer>
+			</Modal>
+		);
+	};
+
+	const ModalObrisi = () => {
+		return (
+			<Modal show={showObrisi} onHide={handleCloseObrisi}>
+				<Modal.Header closeButton>
+					<Modal.Title>Modal heading</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					Woohoo, you're reading this text in a modal!
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={handleCloseObrisi}>
+						Close
+					</Button>
+					<Button variant="primary" onClick={handleCloseObrisi}>
+						Save Changes
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		);
 	};
 
@@ -226,10 +395,12 @@ function ItemProfil() {
 					<DodajUKorpu kol={item.quantity} />
 					<hr />
 					<FormaEmail kolicina={item.quantity} />
+					<AdminFunkcionalnosti />
 				</div>
 			</div>
 			<KomentariProfil productCode={item.productCode} />
-
+			<ModalIzmeni />
+			<ModalObrisi />
 			<div style={{ height: "200px" }}></div>
 		</div>
 	);
