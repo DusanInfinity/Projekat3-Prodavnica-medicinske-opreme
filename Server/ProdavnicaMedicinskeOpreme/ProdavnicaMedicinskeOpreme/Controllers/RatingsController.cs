@@ -34,6 +34,9 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             Rate rate = null;
             try
             {
+                if (rating < 1 || rating > 5)
+                    return BadRequest(new { message = $"Doslo je do greske, ocena moze biti od 1 do 5! ({rating})" });
+
                 var db = _dbClient.GetDatabase("prodavnica");
                 var collectionProducts = db.GetCollection<Product>("produkti");
                 var collectionRatings = db.GetCollection<Rate>("ocene");
