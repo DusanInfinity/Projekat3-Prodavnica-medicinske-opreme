@@ -62,15 +62,16 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public IActionResult Login([FromBody] User user)
+        public IActionResult Login([FromBody] User data)
         {
             try
             {
-                var token = _service.Authenticate(user.Email, user.Password);
+                var token = _service.Authenticate(data.Email, data.Password);
 
                 if (token == null)
                     return Unauthorized(new { message = "Niste uneli ispravne podatke za login!" });
 
+                User user = _service.GetUser(data.Email);
                 return Ok(new { token, user });
             }
             catch (Exception ex)
