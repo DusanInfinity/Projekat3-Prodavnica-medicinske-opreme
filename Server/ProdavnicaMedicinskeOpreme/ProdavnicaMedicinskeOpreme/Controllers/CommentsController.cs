@@ -29,9 +29,15 @@ namespace WebShop.Controllers
             try
             {
                 var db = _dbClient.GetDatabase("prodavnica");
-                var collection = db.GetCollection<ProductComment>("komentari");
+                var collectionProducts = db.GetCollection<Product>("produkti");
+                var collectionComments = db.GetCollection<ProductComment>("komentari");
 
-                comments = await (await collection.FindAsync(c => c.ProductCode == productCode)).ToListAsync();
+                var product = await (await collectionProducts.FindAsync(c => c.ProductCode == productCode)).FirstOrDefaultAsync();
+
+                if (product == null)
+                    return BadRequest(new { message = "Produkt sa datim kodom nije pronadjen!" });
+
+                comments = await (await collectionComments.FindAsync(c => c.Product.Id == product._id)).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -43,27 +49,31 @@ namespace WebShop.Controllers
 
 
         [HttpPost]
-        [Route("DodajKomentar")]
-        public async Task<IActionResult> DodajKomentar([FromBody] ProductComment comment)
+        [Route("DodajKomentar/{productCode}")]
+        public async Task<IActionResult> DodajKomentar(int productCode, [FromBody] ProductComment comment)
         {
-            bool successful = false;
             try
             {
                 var db = _dbClient.GetDatabase("prodavnica");
-                var collection = db.GetCollection<ProductComment>("komentari");
+                var collectionProducts = db.GetCollection<Product>("produkti");
+                var collectionComments = db.GetCollection<ProductComment>("komentari");
 
-                ProductComment newComment = new ProductComment { ProductCode = comment.ProductCode, Name = comment.Name, Email = comment.Email, Text = comment.Text, Date = comment.Date };
-                await collection.InsertOneAsync(comment);
+                var product = await (await collectionProducts.FindAsync(c => c.ProductCode == productCode)).FirstOrDefaultAsync();
 
-                successful = true;
+                if (product == null)
+                    return BadRequest(new { message = "Produkt sa datim kodom nije pronadjen!" });
+
+                comment.Product = new MongoDBRef("produkti", product._id);
+                await collectionComments.InsertOneAsync(comment);
+
+                product.Comments.Add(new MongoDBRef("komentari", comment._id));
+                await collectionProducts.ReplaceOneAsync(p => p._id == product._id, product); // u staroj verziji collection.Save(obj);
             }
             catch (Exception ex)
             {
                 Log.ExceptionTrace(ex);
-            }
-
-            if (!successful)
                 return BadRequest(new { message = "Doslo je do greske prilikom postavljanja komentara!" });
+            }
 
             return Ok(comment);
         }
@@ -76,9 +86,16 @@ namespace WebShop.Controllers
             try
             {
                 var db = _dbClient.GetDatabase("prodavnica");
-                var collection = db.GetCollection<ProductComment>("komentari");
+                var collectionProducts = db.GetCollection<Product>("produkti");
+                var collectionComments = db.GetCollection<ProductComment>("komentari");
 
-                var result = await collection.DeleteOneAsync(c => c.ProductCode == productCode && c.Name == name && c.Date == date);
+
+                var product = await (await collectionProducts.FindAsync(c => c.ProductCode == productCode)).FirstOrDefaultAsync();
+
+                if (product == null)
+                    return BadRequest(new { message = "Produkt sa datim kodom nije pronadjen!" });
+
+                var result = await collectionComments.DeleteOneAsync(c => c.Product.Id == product._id && c.Name == name && c.Date == date);
 
                 successful = result.IsAcknowledged && result.DeletedCount > 0;
             }

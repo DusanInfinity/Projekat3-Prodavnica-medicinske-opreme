@@ -17,10 +17,5 @@ namespace WebShop.Models
         public List<string> Tags { get; set; }
         public string Category { get; set; }
         [JsonIgnore] public List<MongoDBRef> Comments { get; set; }
-
-        public void InformFollowersAboutQuantity(int quantity, List<string> emails)
-        {
-            // TO-DO slanje emailova svim klijentima o dostupnosti proizvoda
-        }
     }
 }
