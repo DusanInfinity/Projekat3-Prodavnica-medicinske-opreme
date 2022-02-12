@@ -20,6 +20,9 @@ namespace ProdavnicaMedicinskeOpreme.Services
 
         public User GetUser(string email)
         {
+            if (string.IsNullOrEmpty(email))
+                return null;
+
             return users.Find<User>(u => u.Email == email).FirstOrDefault();
         }
 

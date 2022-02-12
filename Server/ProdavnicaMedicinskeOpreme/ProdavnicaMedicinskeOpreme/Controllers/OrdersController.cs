@@ -2,8 +2,10 @@
 using MongoDB.Driver;
 using ProdavnicaMedicinskeOpreme.Data;
 using ProdavnicaMedicinskeOpreme.Models;
+using ProdavnicaMedicinskeOpreme.Services;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace ProdavnicaMedicinskeOpreme.Controllers
 {
@@ -13,14 +15,16 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
     {
         private static readonly Logging Log = new Logging("OrdersController");
         private readonly MongoClient _dbClient;
-        public OrdersController(MongoClient client)
+        private readonly UserService _service;
+        public OrdersController(MongoClient client, UserService service)
         {
             _dbClient = client;
+            _service = service;
         }
 
         [HttpPost]
-        [Route("KupiProizvode/{userEmail}")]
-        public IActionResult KupiProizvode(string userEmail, [FromBody] Order order)
+        [Route("KupiProizvode")]
+        public IActionResult KupiProizvode([FromBody] Order order)
         {
             bool successfulOrder = false;
             try
@@ -31,9 +35,9 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                 var collectionUsers = db.GetCollection<User>("korisnici");
 
                 User user = null;
-                if (!string.IsNullOrEmpty(userEmail))
+                if (User.Identity.IsAuthenticated)
                 {
-                    user = collectionUsers.Find(u => u.Email == userEmail).FirstOrDefault();
+                    user = _service.GetUser(User.FindFirstValue(ClaimTypes.Email));
 
                     if (user == null)
                         return BadRequest(new { message = $"Doslo je do greske prilikom kupovine produkta sa Vaseg naloga, pokusajte kasnije!" });
@@ -42,7 +46,7 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
                 Dictionary<OrderedProduct, Product> products = new Dictionary<OrderedProduct, Product>();
                 foreach (OrderedProduct op in order.OrderedProducts)
                 {
-                    var product = collectionProducts.Find(c => c._id == op.Product.Id).FirstOrDefault();
+                    var product = collectionProducts.Find(c => c.ProductCode == op.ProductCode).FirstOrDefault();
 
                     if (product == null)
                         return BadRequest(new { message = $"Jedan od porucenih produkata nije pronadjen!" });
