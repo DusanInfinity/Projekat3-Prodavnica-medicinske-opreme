@@ -15,6 +15,7 @@ class ApiClient extends HttpClient {
       vratiSveProdukte: () => this.get(`Product/VratiSveProdukte`),
       vratiProdukteUKategoriji: (category) => this.get(`Product/VratiProdukteUKategoriji/${category}`),
       pretraziProdukte: (searchString) => this.get(`Product/PretraziProdukte/${searchString}`),
+      vratiNasumicneProdukte: () => this.get(`Product/VratiNasumicneProdukte`),
 
       dodajProdukt: (product) => this.post(`Product/DodajProdukt`, product),
       azurirajProdukt: (product) => this.put(`Product/AzurirajProdukt`, product),

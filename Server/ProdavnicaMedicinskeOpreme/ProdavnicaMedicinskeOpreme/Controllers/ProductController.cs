@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using ProdavnicaMedicinskeOpreme.Data;
 using ProdavnicaMedicinskeOpreme.Models;
 using System;
@@ -89,7 +90,27 @@ namespace ProdavnicaMedicinskeOpreme.Controllers
             return Ok(products);
         }
 
-        // TO-DO vrati produkte random za pocetnu stranu (8)
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("VratiNasumicneProdukte")]
+        public async Task<IActionResult> VratiNasumicneProdukte()
+        {
+            List<Product> products;
+            try
+            {
+                var db = _dbClient.GetDatabase("prodavnica");
+                var collection = db.GetCollection<Product>("produkti");
+
+                products = await collection.AsQueryable<Product>().Sample(8).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.ExceptionTrace(ex);
+                return BadRequest(new { message = $"Doslo je do greske prilikom pribavljanja nasumicnih produkata!" });
+            }
+
+            return Ok(products);
+        }
 
         [AllowAnonymous]
         [HttpGet]
