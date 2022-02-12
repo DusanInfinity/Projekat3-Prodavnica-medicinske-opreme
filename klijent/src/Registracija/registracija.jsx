@@ -6,7 +6,8 @@ import ApiClient from "../Global/apiClient";
 
 function Registracija() {
 
-	
+	const navigate = useNavigate();
+
 	const api = new ApiClient()
 
     const [ime, setIme] = useState("");
@@ -29,8 +30,8 @@ function Registracija() {
 		try{
 			api.setHeader('Content-Type', 'application/json');
 			const user = await api.korisnik.registrujSe(korisnik);
-			console.log(user);
-			
+			alert("Uspesna registracija");
+			navigate("/login");
 		}
 		catch(e){
 			alert(e.message);

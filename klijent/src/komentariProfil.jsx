@@ -7,13 +7,18 @@ function KomentariProfil({ productCode }) {
 	const { id } = useParams();
 	const api = new ApiClient();
 
+	const data = sessionStorage.getItem("user");
+	let user;
+	if (data) {
+		user = JSON.parse(data);
+	}
+
 	const [komentari, setKomentare] = useState([]);
 	const [showForm, setShowForm] = useState(false);
 
 	useEffect(() => {
 		fetchComments();
 	}, []);
-
 
 	const fetchComments = async () => {
 		try {
@@ -98,8 +103,8 @@ function KomentariProfil({ productCode }) {
 				return (
 					<div
 						key={komentar.email + komentar.date}
-						className="komentar-profil"
-						style={{}}
+						className="komentar-profil pb-3 d-flex align-items-center justify-content-between"
+						style={{ borderBottom: "1px solid lightgray" }}
 					>
 						<div className="ms-3">
 							<h5>{komentar.name}</h5>
@@ -110,7 +115,36 @@ function KomentariProfil({ productCode }) {
 								{prebaciVreme(komentar.date)}
 							</label>
 						</div>
-						<hr />
+						<div>
+							{user && user.role === "Admin" && (
+								<button
+									className="btn me-5 p-3"
+									style={{ fontSize: "1.5rem" }}
+									onClick={() => {
+										setKomentare(
+											komentari.filter(
+												(el) =>
+													el.email !==
+														komentar.email &&
+													el.date !== komentar.date
+											)
+										);
+										try {
+											api.komentari.obrisiKomentar(
+												id,
+												komentar.name,
+												komentar.date
+											);
+											alert("Uspesno obrisan komentar");
+										} catch (e) {
+											alert(e.message);
+										}
+									}}
+								>
+									<i className="bi bi-trash"></i>
+								</button>
+							)}
+						</div>
 					</div>
 				);
 			})}

@@ -14,6 +14,8 @@ function ItemProfil() {
 	let { id } = useParams();
 
 	const [item, setItem] = useState([]);
+	const [prosecnaOcena, setProsecnaOcena] = useState(0);
+	const [trenutnaOcena, setTrenutnaOcena] = useState(0);
 
 	const kategorije = [
 		"Parfemi",
@@ -39,6 +41,14 @@ function ItemProfil() {
 	const fetchItem = async () => {
 		const data = await api.produkti.vratiPodatkeProdukta(id);
 		setItem(data);
+
+		try {
+			// sredi api
+			console.log(await api.ocene.vratiBrojOcenaIProsek(id));
+			setProsecnaOcena(1);
+		} catch (e) {
+			alert(e.message);
+		}
 	};
 
 	function formatPrice(price) {
@@ -333,26 +343,108 @@ function ItemProfil() {
 				</Modal.Header>
 				<Modal.Body>
 					Da li ste sigurni da zelite da obrisete proizvod{" "}
-					<span style={{fontWeight: "bold"}}>{item.name}</span>
+					<span style={{ fontWeight: "bold" }}>{item.name}</span>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant="secondary" onClick={handleCloseObrisi}>
 						Zatvori
 					</Button>
-					<Button variant="danger" onClick={handleCloseObrisi} onClick={async () => {
-						try{
-							await api.produkti.obrisiProdukt(item.productCode);
-							alert("Uspesno ste obrisali proizvod");
-							navigate("/");
-						}
-						catch(e){
-							alert(e.message);
-						}
-					}}>
+					<Button
+						variant="danger"
+						onClick={handleCloseObrisi}
+						onClick={async () => {
+							try {
+								await api.produkti.obrisiProdukt(
+									item.productCode
+								);
+								alert("Uspesno ste obrisali proizvod");
+								navigate("/");
+							} catch (e) {
+								alert(e.message);
+							}
+						}}
+					>
 						Sacuvaj
 					</Button>
 				</Modal.Footer>
 			</Modal>
+		);
+	};
+
+	const inicijalizujZvezdice = async (redniBroj) => {
+		try {
+			const ocena = await api.ocene.vratiKorisnikovuOcenu(
+				item.productCode
+			);
+			console.log(ocena);
+		} catch (e) {
+			alert(e.message);
+		}
+
+		obojiZvezdice(redniBroj);
+	};
+
+	const obojiZvezdice = async (redniBroj) => {
+		console.log(redniBroj);
+		setTrenutnaOcena(redniBroj);
+		let niz_zvezdica = [];
+		niz_zvezdica.push(document.querySelector(".s5"));
+		niz_zvezdica.push(document.querySelector(".s4"));
+		niz_zvezdica.push(document.querySelector(".s3"));
+		niz_zvezdica.push(document.querySelector(".s2"));
+		niz_zvezdica.push(document.querySelector(".s1"));
+
+		for (let i = 0; i < redniBroj; i++) {
+			if (!niz_zvezdica[i].classList.contains("active-class")) {
+				niz_zvezdica[i].classList.add("active-star");
+			}
+		}
+		for (let i = redniBroj; i < 5; i++) {
+			if (niz_zvezdica[i].classList.contains("active-class")) {
+				niz_zvezdica[i].classList.remove("active-star");
+			}
+		}
+
+		try {
+			api.setHeader("Content-Type", "application/json");
+			await api.ocene.oceniProizvod(item.productCode, redniBroj);
+		} catch (e) {
+			alert(e.message);
+		}
+	};
+
+	const OceniProizvod = () => {
+		return (
+			<div className="d-flex">
+				<h2>{prosecnaOcena}</h2>
+				<div className="star-wrapper">
+					<i
+						href="#"
+						className="bi bi-star-fill s1"
+						onClick={() => obojiZvezdice(5)}
+					></i>
+					<i
+						href="#"
+						className="bi bi-star-fill s2"
+						onClick={() => obojiZvezdice(4)}
+					></i>
+					<i
+						href="#"
+						className="bi bi-star-fill s3"
+						onClick={() => obojiZvezdice(3)}
+					></i>
+					<i
+						href="#"
+						className="bi bi-star-fill s4"
+						onClick={() => obojiZvezdice(2)}
+					></i>
+					<i
+						href="#"
+						className="bi bi-star-fill s5"
+						onClick={() => obojiZvezdice(1)}
+					></i>
+				</div>
+			</div>
 		);
 	};
 
@@ -368,6 +460,9 @@ function ItemProfil() {
 				<div className="proizvod-profil-data col-md-6">
 					<h2>{item.name}</h2>
 					<ProizvodNaStanju kolicina={item.quantity} />
+					<div>
+						<OceniProizvod />
+					</div>
 					<hr />
 					<h5>{item.description}</h5>
 					<h2 style={{ fontWeight: "bold", color: "#e6127c" }}>
