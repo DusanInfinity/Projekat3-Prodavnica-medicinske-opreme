@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import "../App.css";
+import ApiClient from "../Global/apiClient";
 
 function FormaPorudzbina({ otvoriFormu, items }) {
+
+	const api = new ApiClient();
+
 	const [ime, setIme] = useState("");
 	const [prezime, setPrezime] = useState("");
 	const [telefon, setTelefon] = useState("");
@@ -64,7 +68,7 @@ function FormaPorudzbina({ otvoriFormu, items }) {
 				<div>
 					<button
 						className="btn btn-danger ms-2 mt-3"
-						onClick={() => {
+						onClick={async () => {
 							let korisnik = {
                                 firstname: ime,
                                 lastname: prezime,
@@ -72,12 +76,30 @@ function FormaPorudzbina({ otvoriFormu, items }) {
                                 phoneNumber: telefon
                             };
 
-                            console.log(items);
+							let orderedProducts = []
+							for(let i = 0; i < items.length; i++){
+								let orderedItem = {
+									productCode: items[i].productCode,
+									quantity: items[i].kolicina,
+								}
+								orderedProducts.push(orderedItem);
+							}
 
-                            console.log(korisnik);
+							let order = {
+								customerData: korisnik,
+								orderedProducts: orderedProducts,
+							}
+
+
+							try{
+								api.setHeader('Content-Type', 'application/json')
+								await api.porudzbine.kupiProizvode(order);
+							}catch(e){
+								alert(e.message);
+							}
 						}}
 					>
-						Plati
+						Poruči
 					</button>
 				</div>
 				<div style={{ height: "100px" }}></div>

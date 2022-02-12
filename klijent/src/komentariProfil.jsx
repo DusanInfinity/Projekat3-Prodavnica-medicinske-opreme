@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "./App.css";
 import ApiClient from "./Global/apiClient";
 
 function KomentariProfil({ productCode }) {
+	const { id } = useParams();
 	const api = new ApiClient();
 
 	const [komentari, setKomentare] = useState([]);
@@ -10,17 +12,13 @@ function KomentariProfil({ productCode }) {
 
 	useEffect(() => {
 		fetchComments();
-	}, [productCode]);
+	}, []);
+
 
 	const fetchComments = async () => {
 		try {
-			if (productCode) {
-				const comments = await api.komentari.vratiKomentare(
-					productCode
-				);
-				console.log(comments);
-				setKomentare(comments);
-			}
+			const comments = await api.komentari.vratiKomentare(id);
+			setKomentare(comments);
 		} catch (e) {
 			alert(`Greska ${e.message}`);
 		}
@@ -38,23 +36,22 @@ function KomentariProfil({ productCode }) {
 
 		const posaljiKomentar = async () => {
 			const user = sessionStorage.getItem("user");
-			if(user){
+			if (user) {
 				let data = JSON.parse(user);
 				const comment = {
 					name: `${data.firstname} ${data.lastname}`,
 					email: data.email,
 					text: text,
 					date: new Date(),
-				}
-				try{
-					api.setHeader('Content-Type', 'application/json');
+				};
+				try {
+					api.setHeader("Content-Type", "application/json");
 					await api.komentari.dodajKomentar(productCode, comment);
-				}
-				catch(e){
+					window.location.reload();
+				} catch (e) {
 					alert(e.message);
 				}
 			}
-			
 		};
 
 		return (

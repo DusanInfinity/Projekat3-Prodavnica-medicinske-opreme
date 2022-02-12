@@ -9,6 +9,7 @@ function ItemProfil() {
 	const api = new ApiClient();
 
 	let { id } = useParams();
+	
 	useEffect(() => {
 		fetchItem();
 	}, []);

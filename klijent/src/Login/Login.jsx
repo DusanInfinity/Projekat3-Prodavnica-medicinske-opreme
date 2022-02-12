@@ -28,15 +28,15 @@ function Login() {
 				try{
 					api.setHeader('Content-Type', 'application/json');
 					let data = await api.korisnik.ulogujSe(korisnik);
-					console.log(data);
 					
     				sessionStorage.setItem('token', data.token);
 					sessionStorage.setItem('user', JSON.stringify(data.user));
+					navigate("/");
 				}
 				catch(e){
 					sessionStorage.removeItem('user');
     				sessionStorage.removeItem('token');
-					alert(`greska ${e.message}`);
+					alert(`Greska pri logovanju, pokusajte ponovo. ${e.message}`);
 				}
 			}
 		}
