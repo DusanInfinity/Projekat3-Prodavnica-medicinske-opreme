@@ -135,7 +135,7 @@ function KomentariProfil({ productCode }) {
 												komentar.name,
 												komentar.date
 											);
-											alert("Uspesno obrisan komentar");
+											alert("Uspesno obrisan komentar!");
 										} catch (e) {
 											alert(e.message);
 										}

@@ -155,7 +155,7 @@ function Korpa() {
 								}
 							}}
 						>
-							Nastavi ka placanju
+							Nastavi porudzbinu
 						</button>
 					</div>
 				</div>

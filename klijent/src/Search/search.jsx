@@ -19,6 +19,7 @@ function Search() {
 		console.log(parametri);
 
 		try {
+			if(parametri.length < 1) return;
 			const data = await api.produkti.pretraziProdukte(parametri);
 			console.log(data);
 			setItems(data);

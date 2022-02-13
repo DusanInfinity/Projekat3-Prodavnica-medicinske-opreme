@@ -56,7 +56,7 @@ function Nav() {
 						className="mx-2"
 						style={{ textDecoration: "none" }}
 						onClick={() => {
-							alert("Uspesno ste se odjavili");
+							alert("Uspesno ste se odjavili!");
 							sessionStorage.clear();
 						}}
 					>
@@ -218,7 +218,7 @@ function Nav() {
 									"application/json"
 								);
 								await api.produkti.dodajProdukt(product);
-								alert("Produkt uspesno azuriran");
+								alert(`Produkt ${product.name} uspesno azuriran!`);
 								window.location.reload();
 							} catch (e) {
 								alert(`Probajte sa drugim produkt kodom. ${e.message}`);
