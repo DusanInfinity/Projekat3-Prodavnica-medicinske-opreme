@@ -82,7 +82,7 @@ function Nav({ korpaCounter }) {
 				return (
 					<div className="mb-3">
 						<button
-							className="btn btn-secondary"
+							className="btn btn-success"
 							onClick={handleShowDodaj}
 						>
 							Dodaj proizvod
@@ -201,7 +201,10 @@ function Nav({ korpaCounter }) {
 					<Button
 						variant="primary"
 						onClick={async () => {
-							if (produktKod.length < 1 || Number.isNaN(produktKod)) {
+							if (
+								produktKod.length < 1 ||
+								Number.isNaN(produktKod)
+							) {
 								alert("Niste uneli validan kod prudukta!");
 								return;
 							}
@@ -222,7 +225,6 @@ function Nav({ korpaCounter }) {
 								return;
 							}
 
-							
 							handleCloseDodaj();
 
 							const product = {
@@ -256,6 +258,12 @@ function Nav({ korpaCounter }) {
 		);
 	};
 
+	const handleKeypress = (e) => {
+		if (e.key === "Enter") {
+			pretraga();
+		}
+	};
+
 	return (
 		<nav>
 			<div className="col-md-12 border-gray border-bottom d-flex justify-content-center">
@@ -274,6 +282,7 @@ function Nav({ korpaCounter }) {
 							aria-describedby="basic-addon2"
 							id="search-input"
 							onChange={(e) => setSearchInput(e.target.value)}
+							onKeyPress={handleKeypress}
 						/>
 						<div className="input-group-append">
 							<button
