@@ -6,7 +6,7 @@ import ApiClient from "./Global/apiClient";
 import { Modal, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-function ItemProfil() {
+function ItemProfil({ korpaCounter, setKorpaCounter }) {
 	const api = new ApiClient();
 
 	const navigate = useNavigate();
@@ -40,15 +40,14 @@ function ItemProfil() {
 		inicijalizujZvezdice(id);
 	}, []);
 
-	useEffect(() => {
-		obojiZvezdice(trenutnaOcena);
-	}, [zvezdice]);
+	useEffect(async () => {
+		obojiZvezdice();
+	}, [zvezdice, trenutnaOcena]);
 
 	const fetchItem = async () => {
-		const data = await api.produkti.vratiPodatkeProdukta(id);
-		setItem(data);
-
 		try {
+			const data = await api.produkti.vratiPodatkeProdukta(id);
+			setItem(data);
 			const ocena = await api.ocene.vratiBrojOcenaIProsek(id);
 			setProsecnaOcena(ocena.item2);
 		} catch (e) {
@@ -198,6 +197,8 @@ function ItemProfil() {
 										productCode: item.productCode,
 										kolicina: kolicina,
 									});
+
+									setKorpaCounter(korpaCounter + 1);
 								}
 							} else {
 								korpaProizvodi = [];
@@ -205,11 +206,16 @@ function ItemProfil() {
 									productCode: item.productCode,
 									kolicina: kolicina,
 								});
+
+								setKorpaCounter(korpaCounter + 1);
 							}
 
 							localStorage.setItem(
 								"korpa_proizvodi",
 								JSON.stringify(korpaProizvodi)
+							);
+							alert(
+								`Uspesno ste dodali proizvod ${item.name} u korpu.`
 							);
 						}}
 					>
@@ -356,8 +362,8 @@ function ItemProfil() {
 					</Button>
 					<Button
 						variant="danger"
-						onClick={handleCloseObrisi}
 						onClick={async () => {
+							handleCloseObrisi();
 							try {
 								await api.produkti.obrisiProdukt(
 									item.productCode
@@ -379,37 +385,38 @@ function ItemProfil() {
 	const inicijalizujZvezdice = async (id) => {
 		try {
 			const ocena = await api.ocene.vratiKorisnikovuOcenu(id);
-			setTrenutnaOcena(ocena);
 			let niz = [];
 			for (let i = 1; i <= 5; i++) {
 				if (i <= ocena) {
 					niz.push({
-						class: "active-star",
 						prvi: i,
-						drugi: 5 - i + 1,
+						boji: true,
 					});
 				} else {
 					niz.push({
-						class: "",
 						prvi: i,
-						drugi: 5 - i + 1,
+						boji: false,
 					});
 				}
 			}
+			setTrenutnaOcena(ocena);
 			setZvezdice(niz);
 		} catch (e) {
 			alert(e.message);
 		}
 	};
 
-	const obojiZvezdice = async (redniBroj) => { 
-		console.log(zvezdice);
-		for (let i = redniBroj; i >= 0; i--) {
-			zvezdice[i].class = "active active-class";
+	const obojiZvezdice = async () => {
+		let pom_niz = zvezdice;
+		if (pom_niz.length > 0) {
+			for (let i = 0; i < trenutnaOcena; i++) {
+				pom_niz[i].boji = true;
+			}
+			for (let i = trenutnaOcena; i < 5; i++) {
+				pom_niz[i].boji = false;
+			}
 		}
-		for (let i = 4; i >= redniBroj; i--) {
-			zvezdice[i].class = "";
-		}
+		setZvezdice(pom_niz);
 	};
 
 	const oceniZvezdice = async (redniBroj) => {
@@ -417,10 +424,10 @@ function ItemProfil() {
 			api.setHeader("Content-Type", "application/json");
 			await api.ocene.oceniProizvod(item.productCode, redniBroj);
 			setTrenutnaOcena(redniBroj);
+			window.location.reload();
 		} catch (e) {
 			alert(e.message);
 		}
-		obojiZvezdice(redniBroj);
 	};
 
 	const OceniProizvod = () => {
@@ -435,39 +442,14 @@ function ItemProfil() {
 					</label>
 				</div>
 				<div className="star-wrapper">
-					{/* <i
-						href="#"
-						className="bi bi-star-fill s1"
-						onClick={() => oceniZvezdice(5)}
-					></i>
-					<i
-						href="#"
-						className="bi bi-star-fill s2"
-						onClick={() => oceniZvezdice(4)}
-					></i>
-					<i
-						href="#"
-						className="bi bi-star-fill s3"
-						onClick={() => oceniZvezdice(3)}
-					></i>
-					<i
-						href="#"
-						className="bi bi-star-fill s4"
-						onClick={() => oceniZvezdice(2)}
-					></i>
-					<i
-						href="#"
-						className="bi bi-star-fill s5"
-						onClick={() => oceniZvezdice(1)}
-					></i> */}
 					{zvezdice.map((el) => {
 						return (
 							<i
 								key={el.prvi}
-								className={
-									`bi bi-star-fill s${el.prvi} ` + el.class
-								}
-								onClick={() => oceniZvezdice(el.drugi)}
+								className={`bi bi-star-fill s${el.prvi} ${
+									el.boji === true ? "active-star" : ""
+								}`}
+								onClick={() => oceniZvezdice(el.prvi)}
 							></i>
 						);
 					})}

@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Link, useParams } from "react-router-dom";
 
-function Item({ proizvod }) {
+function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 	useEffect(() => {
 		fetchItem();
-	}, []);
+	}, [proizvod]);
 
 	const [item, setItem] = useState([]);
 
 	const fetchItem = async () => {
 		const data = proizvod;
-
 		setItem(data);
 	};
 
@@ -41,6 +40,15 @@ function Item({ proizvod }) {
 										productCode: item.productCode,
 										kolicina: 1,
 									});
+
+									setKorpaCounter(korpaCounter + 1);
+									alert(
+										`Uspesno ste dodali proizvod ${item.name} u korpu.`
+									);
+								} else {
+									alert(
+										`Proizvod ${item.name} se vec nalazi u korpi.`
+									);
 								}
 							} else {
 								korpaProizvodi = [];
@@ -48,6 +56,11 @@ function Item({ proizvod }) {
 									productCode: item.productCode,
 									kolicina: 1,
 								});
+
+								setKorpaCounter(korpaCounter + 1);
+								alert(
+									`Uspesno ste dodali proizvod ${item.name} u korpu.`
+								);
 							}
 							localStorage.setItem(
 								"korpa_proizvodi",

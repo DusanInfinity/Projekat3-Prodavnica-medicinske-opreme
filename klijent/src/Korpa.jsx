@@ -5,7 +5,7 @@ import ItemKorpa from "./ItemKorpa";
 import FormaPorudzbina from "./Korpa/FormaPorudzbina";
 import ApiClient from "./Global/apiClient";
 
-function Korpa() {
+function Korpa({ korpaCounter, setKorpaCounter }) {
 	const api = new ApiClient();
 
 	const [items, setItems] = useState([]);
@@ -63,7 +63,7 @@ function Korpa() {
 	const isprazniKorpu = () => {
 		setItems([]);
 		localStorage.removeItem("korpa_proizvodi");
-	}
+	};
 
 	return (
 		<div className="col-md-8 d-flex flex-column align-items-center">
@@ -118,6 +118,8 @@ function Korpa() {
 						{items.map((item) => {
 							return (
 								<ItemKorpa
+									korpaCounter={korpaCounter}
+									setKorpaCounter={setKorpaCounter}
 									key={item.productCode}
 									proizvod={item}
 									cena={item.ukupnaCena}
@@ -160,7 +162,13 @@ function Korpa() {
 					</div>
 				</div>
 			</div>
-			<FormaPorudzbina otvoriFormu={otvoriFormu} items={items} isprazniKorpu={isprazniKorpu}/>
+			<FormaPorudzbina
+				otvoriFormu={otvoriFormu}
+				items={items}
+				isprazniKorpu={isprazniKorpu}
+				korpaCounter={korpaCounter}
+				setKorpaCounter={setKorpaCounter}
+			/>
 		</div>
 	);
 }

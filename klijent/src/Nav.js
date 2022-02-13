@@ -8,11 +8,10 @@ import Kategorije from "./kategorije";
 import { Modal, Button } from "react-bootstrap";
 import ApiClient from "./Global/apiClient";
 
-function Nav() {
+function Nav({ korpaCounter }) {
 	const api = new ApiClient();
 
 	const [searchInput, setSearchInput] = useState("");
-	const [korpaCounter, setKorpaCounter] = useState(0);
 
 	const [showDodaj, setShowDodaj] = useState(false);
 	const handleCloseDodaj = () => setShowDodaj(false);
@@ -25,14 +24,6 @@ function Nav() {
 		"Lekovi",
 		"Zenski kutak",
 	];
-
-	useEffect(() => {
-		let products = localStorage.getItem("korpa_proizvodi");
-		if (products) {
-			products = JSON.parse(products);
-			setKorpaCounter(products.length);
-		}
-	}, []);
 
 	let navigate = useNavigate();
 	const pretraga = () => {
@@ -61,14 +52,6 @@ function Nav() {
 						}}
 					>
 						Logout
-					</Link>
-					/
-					<Link
-						to={"/prethodnePorudzbine"}
-						className="mx-2"
-						style={{ textDecoration: "none" }}
-					>
-						Prethodne porudzbine
 					</Link>
 				</div>
 			);
@@ -119,7 +102,7 @@ function Nav() {
 		const [cena, setCena] = useState("");
 		const [deskripcija, setDeskripcija] = useState("");
 		const [kolicina, setKolicina] = useState("");
-		const [kategorija, setKategorija] = useState("");
+		const [kategorija, setKategorija] = useState("Lekovi");
 
 		return (
 			<Modal show={showDodaj} onHide={handleCloseDodaj}>
@@ -184,6 +167,7 @@ function Nav() {
 							onChange={(e) => {
 								setKategorija(e.target.value);
 							}}
+							defaultValue={"Lekovi"}
 						>
 							{kategorije.map((kat) => {
 								return (
@@ -218,10 +202,12 @@ function Nav() {
 									"application/json"
 								);
 								await api.produkti.dodajProdukt(product);
-								alert("Produkt uspesno azuriran");
+								alert("Produkt uspesno dodat");
 								window.location.reload();
 							} catch (e) {
-								alert(`Probajte sa drugim produkt kodom. ${e.message}`);
+								alert(
+									`Probajte sa drugim produkt kodom. ${e.message}`
+								);
 							}
 						}}
 					>

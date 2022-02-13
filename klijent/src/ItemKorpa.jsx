@@ -2,7 +2,15 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Link, useParams } from "react-router-dom";
 
-function ItemKorpa({ proizvod, onPlus, onMinus, items, setItems }) {
+function ItemKorpa({
+	proizvod,
+	onPlus,
+	onMinus,
+	items,
+	setItems,
+	korpaCounter,
+	setKorpaCounter,
+}) {
 	const [item, setItem] = useState([]);
 	const [kolicina, setKolicina] = useState(0);
 	const [ukupnaSumaProizvoda, setukupnaSumaProizvoda] = useState(0);
@@ -19,10 +27,10 @@ function ItemKorpa({ proizvod, onPlus, onMinus, items, setItems }) {
 		updateLocalStorage();
 		setukupnaSumaProizvoda(item.price * kolicina);
 		items.map((el) => {
-			if(el.productCode === item.productCode){
+			if (el.productCode === item.productCode) {
 				el.kolicina = kolicina;
 			}
-		})
+		});
 	}, [kolicina]);
 
 	useEffect(() => {
@@ -42,12 +50,11 @@ function ItemKorpa({ proizvod, onPlus, onMinus, items, setItems }) {
 	const deleteFromLocalStorage = () => {
 		let local = JSON.parse(localStorage.getItem("korpa_proizvodi"));
 		let exists = local.find((el) => el.productCode === item.productCode);
-		if(exists){
-			local = local.filter(el => el.productCode !== item.productCode);
+		if (exists) {
+			local = local.filter((el) => el.productCode !== item.productCode);
 			localStorage.setItem("korpa_proizvodi", JSON.stringify(local));
 		}
 	};
-
 
 	const brisanje = (item) => {
 		const obrisani = items.filter(
@@ -73,7 +80,10 @@ function ItemKorpa({ proizvod, onPlus, onMinus, items, setItems }) {
 				<button
 					className="btn"
 					style={{ outline: "none", fontSize: "1.1rem" }}
-					onClick={() => brisanje(item)}
+					onClick={() => {
+						setKorpaCounter(korpaCounter - 1);
+						brisanje(item);
+					}}
 				>
 					<i className="bi bi-trash"></i>
 				</button>

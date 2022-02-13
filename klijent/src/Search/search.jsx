@@ -5,7 +5,7 @@ import "../App.css";
 import ApiClient from "../Global/apiClient";
 import { Alert } from "bootstrap";
 
-function Search() {
+function Search({korpaCounter, setKorpaCounter }) {
 	const api = new ApiClient();
 
 	let { parametri } = useParams();
@@ -16,11 +16,9 @@ function Search() {
 	}, [parametri]);
 
 	const fetchItems = async () => {
-		console.log(parametri);
 
 		try {
 			const data = await api.produkti.pretraziProdukte(parametri);
-			console.log(data);
 			setItems(data);
 		} catch (e) {
 			alert(e.message);
@@ -32,7 +30,7 @@ function Search() {
 			<h3>Rezultat pretrage za parametre "{parametri}"</h3>
 			<div className="proizvodi-container col-sm-12">
 				{items.map((item) => {
-					return <Item key={item.productCode} proizvod={item} />;
+					return <Item key={item.productCode} proizvod={item} korpaCounter={korpaCounter} setKorpaCounter={setKorpaCounter}/>;
 				})}
 			</div>
 		</div>

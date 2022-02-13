@@ -3,8 +3,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import "../App.css";
 import ApiClient from "../Global/apiClient";
 
-function FormaPorudzbina({ otvoriFormu, items, isprazniKorpu }) {
-
+function FormaPorudzbina({
+	otvoriFormu,
+	items,
+	isprazniKorpu,
+	korpaCounter,
+	setKorpaCounter,
+}) {
 	let navigate = useNavigate();
 
 	const api = new ApiClient();
@@ -73,34 +78,37 @@ function FormaPorudzbina({ otvoriFormu, items, isprazniKorpu }) {
 						className="btn btn-danger ms-2 mt-3"
 						onClick={async () => {
 							let korisnik = {
-                                firstname: ime,
-                                lastname: prezime,
-                                address: adresa,
-                                phoneNumber: telefon
-                            };
+								firstname: ime,
+								lastname: prezime,
+								address: adresa,
+								phoneNumber: telefon,
+							};
 
-							let orderedProducts = []
-							for(let i = 0; i < items.length; i++){
+							let orderedProducts = [];
+							for (let i = 0; i < items.length; i++) {
 								let orderedItem = {
 									productCode: items[i].productCode,
 									quantity: items[i].kolicina,
-								}
+								};
 								orderedProducts.push(orderedItem);
 							}
 
 							let order = {
 								customerData: korisnik,
 								orderedProducts: orderedProducts,
-							}
+							};
 
-
-							try{
-								api.setHeader('Content-Type', 'application/json')
+							try {
+								api.setHeader(
+									"Content-Type",
+									"application/json"
+								);
 								await api.porudzbine.kupiProizvode(order);
 								alert("Uspesna porudzbina");
 								isprazniKorpu();
+								setKorpaCounter(0);
 								navigate("/");
-							}catch(e){
+							} catch (e) {
 								alert(e.message);
 							}
 						}}
