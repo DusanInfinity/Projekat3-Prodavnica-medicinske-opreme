@@ -215,7 +215,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 								JSON.stringify(korpaProizvodi)
 							);
 							alert(
-								`Uspesno ste dodali proizvod ${item.name} u korpu.`
+								`Uspešno ste dodali proizvod ${item.name} u korpu.`
 							);
 						}}
 					>
@@ -289,6 +289,11 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 							className="col-md-8"
 							onChange={(e) => setCena(e.target.value)}
 							value={cena}
+							onKeyPress={(event) => {
+								if (!/[0-9]/.test(event.key)) {
+									event.preventDefault();
+								}
+							}}
 						/>
 					</div>
 					<div className="col-md-12 d-flex justify-content-between mb-3">
@@ -307,6 +312,11 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 							className="col-md-8"
 							onChange={(e) => setKolicina(e.target.value)}
 							value={kolicina}
+							onKeyPress={(event) => {
+								if (!/[0-9]/.test(event.key)) {
+									event.preventDefault();
+								}
+							}}
 						/>
 					</div>
 				</Modal.Body>
@@ -317,6 +327,23 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 					<Button
 						variant="primary"
 						onClick={async () => {
+							if (naziv.length < 1) {
+								alert("Niste uneli naziv!");
+								return;
+							}
+							if (cena.length < 1 || Number.isNaN(cena)) {
+								alert("Niste uneli cenu proizvoda!");
+								return;
+							}
+							if (deskripcija.length < 1) {
+								alert("Niste uneli deskripciju!");
+								return;
+							}
+							if (kolicina.length < 1 || Number.isNaN(kolicina)) {
+								alert("Niste uneli kolicinu proizvoda!");
+								return;
+							}
+
 							handleCloseIzmeni();
 							const product = {
 								productCode: item.productCode,
@@ -332,7 +359,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 									"application/json"
 								);
 								await api.produkti.azurirajProdukt(product);
-								alert(`Produkt ${product.name} uspesno azuriran!`);
+								alert(`Produkt ${product.name} Uspešno azuriran!`);
 								window.location.reload();
 							} catch (e) {
 								alert(e.message);
@@ -368,7 +395,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 								await api.produkti.obrisiProdukt(
 									item.productCode
 								);
-								alert(`Uspesno ste obrisali proizvod ${item.name} iz baze!`);
+								alert(`Uspešno ste obrisali proizvod ${item.name} iz baze!`);
 								navigate("/");
 							} catch (e) {
 								alert(e.message);
@@ -420,13 +447,21 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 	};
 
 	const oceniZvezdice = async (redniBroj) => {
-		try {
-			api.setHeader("Content-Type", "application/json");
-			await api.ocene.oceniProizvod(item.productCode, redniBroj);
-			setTrenutnaOcena(redniBroj);
-			window.location.reload();
-		} catch (e) {
-			alert(e.message);
+
+		const data = sessionStorage.getItem("user");
+		if(data){
+			try {
+				api.setHeader("Content-Type", "application/json");
+				await api.ocene.oceniProizvod(item.productCode, redniBroj);
+				setTrenutnaOcena(redniBroj);
+				window.location.reload();
+			} catch (e) {
+				alert(e.message);
+			}
+		}
+		else{
+			alert("Morate biti prijavljeni da bi ste ocenili proizvod.");
+			navigate("/login");
 		}
 	};
 

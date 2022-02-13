@@ -25,17 +25,63 @@ function App() {
 	return (
 		<Router basename="/">
 			<div className="App">
-				<Nav korpaCounter={korpaCounter}/>
+				<Nav korpaCounter={korpaCounter} />
 				<Routes>
-					<Route path="/" element={<Home korpaCounter={korpaCounter} setKorpaCounter={setKorpaCounter}/>} />
+					<Route
+						path="/"
+						element={
+							<Home
+								korpaCounter={korpaCounter}
+								setKorpaCounter={setKorpaCounter}
+							/>
+						}
+					/>
 					<Route path="/about" element={<About />} />
-					<Route path="/korpa" element={<Korpa korpaCounter={korpaCounter} setKorpaCounter={setKorpaCounter}/>} />
-					<Route path="/item/:id" element={<ItemProfil korpaCounter={korpaCounter} setKorpaCounter={setKorpaCounter}/>} />
-					<Route path="/kategorija/:kat" element={<Kategorija korpaCounter={korpaCounter} setKorpaCounter={setKorpaCounter}/>} />
+					<Route
+						path="/korpa"
+						element={
+							<Korpa
+								korpaCounter={korpaCounter}
+								setKorpaCounter={setKorpaCounter}
+							/>
+						}
+					/>
+					<Route
+						path="/item/:id"
+						element={
+							<ItemProfil
+								korpaCounter={korpaCounter}
+								setKorpaCounter={setKorpaCounter}
+							/>
+						}
+					/>
+					<Route
+						path="/kategorija/:kat"
+						element={
+							<Kategorija
+								korpaCounter={korpaCounter}
+								setKorpaCounter={setKorpaCounter}
+							/>
+						}
+					/>
 					<Route path="/login" element={<Login />} />
 					<Route path="/registracija" element={<Registracija />} />
-					<Route path="/search/:parametri" element={<Search korpaCounter={korpaCounter} setKorpaCounter={setKorpaCounter}/>} />
+					<Route
+						path="/search/:parametri"
+						element={
+							<Search
+								korpaCounter={korpaCounter}
+								setKorpaCounter={setKorpaCounter}
+							/>
+						}
+					/>
 				</Routes>
+				<div className="pb-5"></div>
+				<div id="footer">
+					<div class="text-center">
+						<label>© 2022 Copyright: DSoft team</label>
+					</div>
+				</div>
 			</div>
 		</Router>
 	);

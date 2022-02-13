@@ -2,7 +2,19 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	/* background: rgb(237, 249, 255); */
+	min-height: 100vh;
+	position: relative;
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 1.5rem; /* Footer height */
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	background: rgb(237, 249, 255);
 }
 
 nav {
@@ -32,6 +44,7 @@ nav {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
+	justify-content: center;
 }
 
 .proizvod-container {
@@ -52,11 +65,9 @@ nav {
 	object-fit: cover;
 }
 
-
 .korpa-tabela thead {
 	border-top: 1px solid lightgray;
 	border-bottom: 1px solid lightgray;
-
 }
 
 .korpa-tabela thead th {
@@ -69,61 +80,58 @@ nav {
 	object-fit: cover;
 }
 
-.proizvod-container-korpa .input-group{
+.proizvod-container-korpa .input-group {
 	justify-content: center !important;
 }
 
-.korpa-tabela tbody tr{
+.korpa-tabela tbody tr {
 	border-bottom: 1px solid lightgray;
 }
 
-.korpa-tabela tbody td{
+.korpa-tabela tbody td {
 	display: flex;
 	align-items: center;
 }
 
-
-
-
-
-  .star-wrapper {
+.star-wrapper {
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
 	position: initial;
-  }
-  .star-wrapper a, .star-wrapper i{
+}
+.star-wrapper a,
+.star-wrapper i {
 	font-size: 3em;
 	color: rgb(205, 211, 150);
 	text-decoration: none;
 	transition: all 0.5s;
 	margin: 4px;
-  }
-  .star-wrapper a:hover, .star-wrapper i:hover{
+}
+.star-wrapper a:hover,
+.star-wrapper i:hover {
 	color: rgb(155, 141, 63);
 	transform: scale(1.3);
-  }
-  .active-star{
-	  color:gold !important;
-  }
-  .s1:hover ~ a {
+}
+.active-star {
+	color: gold !important;
+}
+.s1:hover ~ a {
 	color: gold;
-  }
-  .s2:hover ~ a {
+}
+.s2:hover ~ a {
 	color: gold;
-  }
-  .s3:hover ~ a {
+}
+.s3:hover ~ a {
 	color: gold;
-  }
-  .s4:hover ~ a {
+}
+.s4:hover ~ a {
 	color: gold;
-  }
-  .s5:hover ~ a {
+}
+.s5:hover ~ a {
 	color: gold;
-  }
-  .wraper {
+}
+.wraper {
 	position: absolute;
 	bottom: 30px;
 	right: 50px;
-  }
-  
+}

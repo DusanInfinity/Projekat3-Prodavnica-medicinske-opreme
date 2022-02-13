@@ -31,12 +31,15 @@ function Login() {
 
 					sessionStorage.setItem("token", data.token);
 					sessionStorage.setItem("user", JSON.stringify(data.user));
+					alert(
+						`Uspešno ste se ulogovali. Dobrodošli ${data.user.firstname}`
+					);
 					navigate("/");
 				} catch (e) {
 					sessionStorage.removeItem("user");
 					sessionStorage.removeItem("token");
 					alert(
-						`Greska pri logovanju, pokusajte ponovo. ${e.message}`
+						`Greška pri logovanju, pokušajte ponovo. ${e.message}`
 					);
 				}
 			}
@@ -90,8 +93,9 @@ function Login() {
 				<div className="col-md-12 d-flex flex-column p-5 justify-content-between">
 					<h2>Niste registrovani?</h2>
 					<p className="ps-2 mt-3" style={{ color: "gray" }}>
-						Kreirajte nalog kako bi lakse mogli da izvrsite kupovinu
-						i pogledali prethodne porudzbine.
+						Kreirajte nalog kako bi lakše mogli da izvršite kupovinu,
+						mogli da ocenite proizvod i da ostavite komentar za
+						proizvod.
 					</p>
 					<div>
 						<button

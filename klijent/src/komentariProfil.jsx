@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate} from "react-router-dom";
 import "./App.css";
 import ApiClient from "./Global/apiClient";
 
 function KomentariProfil({ productCode }) {
+
+	const navigate = useNavigate();
+
 	const { id } = useParams();
 	const api = new ApiClient();
 
@@ -25,7 +28,7 @@ function KomentariProfil({ productCode }) {
 			const comments = await api.komentari.vratiKomentare(id);
 			setKomentare(comments);
 		} catch (e) {
-			alert(`Greska ${e.message}`);
+			alert(e.message);
 		}
 	};
 
@@ -86,11 +89,19 @@ function KomentariProfil({ productCode }) {
 				<button
 					className="btn btn-outline-primary"
 					onClick={(e) => {
-						setShowForm(!showForm);
-						if (!showForm) {
-							e.target.innerText = "Zatvorite formu";
+						const data = sessionStorage.getItem("user");
+						if (data) {
+							setShowForm(!showForm);
+							if (!showForm) {
+								e.target.innerText = "Zatvorite formu";
+							} else {
+								e.target.innerText = "Dodaj svoj komentar";
+							}
 						} else {
-							e.target.innerText = "Dodaj svoj komentar";
+							alert(
+								"Morate biti prijavljeni da bi ste ostavili komentar."
+							);
+							navigate("/login");
 						}
 					}}
 				>
@@ -135,7 +146,7 @@ function KomentariProfil({ productCode }) {
 												komentar.name,
 												komentar.date
 											);
-											alert("Uspesno obrisan komentar!");
+											alert("Uspešno obrisan komentar!");
 										} catch (e) {
 											alert(e.message);
 										}

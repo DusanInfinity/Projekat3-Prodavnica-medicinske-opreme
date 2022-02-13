@@ -13,16 +13,17 @@ function FormaPorudzbina({
 	let navigate = useNavigate();
 
 	const api = new ApiClient();
-
 	const [ime, setIme] = useState("");
 	const [prezime, setPrezime] = useState("");
 	const [telefon, setTelefon] = useState("");
 	const [email, setEmail] = useState("");
 	const [adresa, setAdresa] = useState("");
-
 	if (!otvoriFormu) {
 		return null;
 	} else {
+		const data = sessionStorage.getItem("user");
+		const user = JSON.parse(data);
+
 		return (
 			<div className="mt-5 col-md-12">
 				<h5>Podaci korisnika</h5>
@@ -36,6 +37,7 @@ function FormaPorudzbina({
 								name="ime"
 								id="ime"
 								className="col-md-9"
+								defaultValue={user.firstname}
 								onChange={(e) => setIme(e.target.value)}
 							/>
 						</div>
@@ -46,6 +48,7 @@ function FormaPorudzbina({
 								name="prezime"
 								id="prezime"
 								className="col-md-9"
+								defaultValue={user.lastname}
 								onChange={(e) => setPrezime(e.target.value)}
 							/>
 						</div>
@@ -58,6 +61,7 @@ function FormaPorudzbina({
 								name="adresa"
 								id="adresa"
 								className="col-md-9"
+								defaultValue={user.address}
 								onChange={(e) => setAdresa(e.target.value)}
 							/>
 						</div>
@@ -68,7 +72,13 @@ function FormaPorudzbina({
 								name="telefon"
 								id="telefon"
 								className="col-md-9"
+								defaultValue={user.phoneNumber}
 								onChange={(e) => setTelefon(e.target.value)}
+								onKeyPress={(event) => {
+									if (!/[0-9+]/.test(event.key)) {
+										event.preventDefault();
+									}
+								}}
 							/>
 						</div>
 					</div>
@@ -77,22 +87,6 @@ function FormaPorudzbina({
 					<button
 						className="btn btn-danger ms-2 mt-3"
 						onClick={async () => {
-							if(ime.length < 1 || prezime.length < 1)
-							{
-								alert("Niste uneli validno ime/prezime!")
-								return;
-							}
-							if(adresa.length < 1)
-							{
-								alert("Niste uneli adresu!")
-								return;
-							}
-							if(telefon.length < 1 || Number.isNaN(telefon))
-							{
-								alert("Niste uneli validan broj telefona!")
-								return;
-							}
-
 							let korisnik = {
 								firstname: ime,
 								lastname: prezime,
@@ -120,7 +114,7 @@ function FormaPorudzbina({
 									"application/json"
 								);
 								await api.porudzbine.kupiProizvode(order);
-								alert("Uspesno ste porucili proizvode!");
+								alert("Uspešno ste porucili proizvode!");
 								isprazniKorpu();
 								setKorpaCounter(0);
 								navigate("/");

@@ -58,7 +58,7 @@ function Registracija() {
 		try{
 			api.setHeader('Content-Type', 'application/json');
 			await api.korisnik.registrujSe(korisnik);
-			alert("Uspesno ste se registrovali, sada se ulogujte!");
+			alert("Uspešno ste se registrovali, sada se ulogujte!");
 			navigate("/login");
 		}
 		catch(e){
@@ -112,6 +112,11 @@ function Registracija() {
 							id="telefon"
 							className="col-md-9"
                             onChange={(e) => setTelefon(e.target.value)}
+							onKeyPress={(event) => {
+								if (!/[0-9+]/.test(event.key)) {
+									event.preventDefault();
+								}
+							}}
 						/>
 					</div>
 				</div>

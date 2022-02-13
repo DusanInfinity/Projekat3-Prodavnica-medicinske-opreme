@@ -43,7 +43,7 @@ function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 
 									setKorpaCounter(korpaCounter + 1);
 									alert(
-										`Uspesno ste dodali proizvod ${item.name} u korpu.`
+										`Uspešno ste dodali proizvod ${item.name} u korpu.`
 									);
 								} else {
 									alert(
@@ -59,7 +59,7 @@ function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 
 								setKorpaCounter(korpaCounter + 1);
 								alert(
-									`Uspesno ste dodali proizvod ${item.name} u korpu.`
+									`Uspešno ste dodali proizvod ${item.name} u korpu.`
 								);
 							}
 							localStorage.setItem(

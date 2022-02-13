@@ -45,7 +45,6 @@ function ItemKorpa({
 			exists.kolicina = kolicina;
 			localStorage.setItem("korpa_proizvodi", JSON.stringify(local));
 		}
-		alert(`Uspesno ste dodali proizvod ${item.name} u korpu. (x${kolicina})`);
 	};
 
 	const deleteFromLocalStorage = () => {
@@ -54,7 +53,7 @@ function ItemKorpa({
 		if (exists) {
 			local = local.filter((el) => el.productCode !== item.productCode);
 			localStorage.setItem("korpa_proizvodi", JSON.stringify(local));
-			alert(`Uspesno ste obrisali proizvod ${item.name} iz korpe.`);
+			alert(`Uspešno ste obrisali proizvod ${item.name} iz korpe.`);
 		}
 		
 	};

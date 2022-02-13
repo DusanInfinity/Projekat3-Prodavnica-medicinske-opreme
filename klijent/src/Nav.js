@@ -47,7 +47,7 @@ function Nav({ korpaCounter }) {
 						className="mx-2"
 						style={{ textDecoration: "none" }}
 						onClick={() => {
-							alert("Uspesno ste se odjavili!");
+							alert("Uspešno ste se odjavili!");
 							sessionStorage.clear();
 						}}
 					>
@@ -117,6 +117,11 @@ function Nav({ korpaCounter }) {
 							className="col-md-8"
 							onChange={(e) => setProduktKod(e.target.value)}
 							value={produktKod}
+							onKeyPress={(event) => {
+								if (!/[0-9]/.test(event.key)) {
+									event.preventDefault();
+								}
+							}}
 						/>
 					</div>
 					<div className="col-md-12 d-flex justify-content-between mb-3">
@@ -135,6 +140,11 @@ function Nav({ korpaCounter }) {
 							className="col-md-8"
 							onChange={(e) => setCena(e.target.value)}
 							value={cena}
+							onKeyPress={(event) => {
+								if (!/[0-9]/.test(event.key)) {
+									event.preventDefault();
+								}
+							}}
 						/>
 					</div>
 					<div className="col-md-12 d-flex justify-content-between mb-3">
@@ -153,6 +163,11 @@ function Nav({ korpaCounter }) {
 							className="col-md-8"
 							onChange={(e) => setKolicina(e.target.value)}
 							value={kolicina}
+							onKeyPress={(event) => {
+								if (!/[0-9]/.test(event.key)) {
+									event.preventDefault();
+								}
+							}}
 						/>
 					</div>
 					<div className="col-md-12 d-flex justify-content-between mb-3">
@@ -186,7 +201,30 @@ function Nav({ korpaCounter }) {
 					<Button
 						variant="primary"
 						onClick={async () => {
+							if (produktKod.length < 1 || Number.isNaN(produktKod)) {
+								alert("Niste uneli validan kod prudukta!");
+								return;
+							}
+							if (naziv.length < 1) {
+								alert("Niste uneli naziv!");
+								return;
+							}
+							if (cena.length < 1 || Number.isNaN(cena)) {
+								alert("Niste uneli cenu proizvoda!");
+								return;
+							}
+							if (deskripcija.length < 1) {
+								alert("Niste uneli deskripciju!");
+								return;
+							}
+							if (kolicina.length < 1 || Number.isNaN(kolicina)) {
+								alert("Niste uneli kolicinu proizvoda!");
+								return;
+							}
+
+							
 							handleCloseDodaj();
+
 							const product = {
 								productCode: produktKod,
 								name: naziv,
@@ -202,7 +240,7 @@ function Nav({ korpaCounter }) {
 									"application/json"
 								);
 								await api.produkti.dodajProdukt(product);
-								alert("Produkt uspesno dodat");
+								alert("Produkt Uspešno dodat");
 								window.location.reload();
 							} catch (e) {
 								alert(
