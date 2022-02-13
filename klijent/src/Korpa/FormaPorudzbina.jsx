@@ -77,6 +77,22 @@ function FormaPorudzbina({
 					<button
 						className="btn btn-danger ms-2 mt-3"
 						onClick={async () => {
+							if(ime.length < 1 || prezime.length < 1)
+							{
+								alert("Niste uneli validno ime/prezime!")
+								return;
+							}
+							if(adresa.length < 1)
+							{
+								alert("Niste uneli adresu!")
+								return;
+							}
+							if(telefon.length < 1 || Number.isNaN(telefon))
+							{
+								alert("Niste uneli validan broj telefona!")
+								return;
+							}
+
 							let korisnik = {
 								firstname: ime,
 								lastname: prezime,
@@ -104,7 +120,7 @@ function FormaPorudzbina({
 									"application/json"
 								);
 								await api.porudzbine.kupiProizvode(order);
-								alert("Uspesna porudzbina");
+								alert("Uspesno ste porucili proizvode!");
 								isprazniKorpu();
 								setKorpaCounter(0);
 								navigate("/");

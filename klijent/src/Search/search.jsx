@@ -18,6 +18,7 @@ function Search({korpaCounter, setKorpaCounter }) {
 	const fetchItems = async () => {
 
 		try {
+			if(parametri.length < 1) return;
 			const data = await api.produkti.pretraziProdukte(parametri);
 			setItems(data);
 		} catch (e) {

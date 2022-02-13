@@ -332,7 +332,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 									"application/json"
 								);
 								await api.produkti.azurirajProdukt(product);
-								alert("Produkt uspesno azuriran");
+								alert(`Produkt ${product.name} uspesno azuriran!`);
 								window.location.reload();
 							} catch (e) {
 								alert(e.message);
@@ -368,7 +368,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 								await api.produkti.obrisiProdukt(
 									item.productCode
 								);
-								alert("Uspesno ste obrisali proizvod");
+								alert(`Uspesno ste obrisali proizvod ${item.name} iz baze!`);
 								navigate("/");
 							} catch (e) {
 								alert(e.message);

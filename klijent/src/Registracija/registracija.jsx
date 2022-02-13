@@ -18,6 +18,34 @@ function Registracija() {
     const [lozinka, setLozinka] = useState("");
 
     const registruj = async () => {
+		if(ime.length < 1 || prezime.length < 1)
+		{
+			alert("Niste uneli validno ime/prezime!")
+			return;
+		}
+		if(adresa.length < 1)
+		{
+			alert("Niste uneli adresu!")
+			return;
+		}
+		if(telefon.length < 1 || Number.isNaN(telefon))
+		{
+			alert("Niste uneli validan broj telefona!")
+			return;
+		}
+		const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+		if (!email.match(mailformat))
+		{
+			alert("Niste uneli validnu email adresu!")
+			return;
+		}
+		if(lozinka.length < 1)
+		{
+			alert("Niste uneli lozinku!")
+			return;
+		}
+
+
         const korisnik = {
             firstname: ime,
             lastname: prezime,
@@ -29,15 +57,13 @@ function Registracija() {
 
 		try{
 			api.setHeader('Content-Type', 'application/json');
-			const user = await api.korisnik.registrujSe(korisnik);
-			alert("Uspesna registracija");
+			await api.korisnik.registrujSe(korisnik);
+			alert("Uspesno ste se registrovali, sada se ulogujte!");
 			navigate("/login");
 		}
 		catch(e){
 			alert(e.message);
 		}
-		
-		// odvede na login stranicu ako je uspesno
     }
 
 	return (

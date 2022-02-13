@@ -21,7 +21,7 @@ function Shop() {
 
 	return (
 		<div>
-			<h1>Shop page</h1>
+			<h1>Shop</h1>
 			{items.map((item) => {
 				return <Item key={item.id} proizvod={item} />;
 			})}
