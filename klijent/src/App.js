@@ -78,7 +78,7 @@ function App() {
 				</Routes>
 				<div className="pb-5"></div>
 				<div id="footer">
-					<div class="text-center">
+					<div className="text-center">
 						<label>© 2022 Copyright: DSoft team</label>
 					</div>
 				</div>
