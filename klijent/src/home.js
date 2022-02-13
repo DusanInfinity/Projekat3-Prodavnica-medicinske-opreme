@@ -43,7 +43,7 @@ function Home() {
 
 	return (
 		<div className="col-md-8 d-flex flex-column justify-content-center align-items-center">
-			<h1>Home page</h1>
+			<h1>Home</h1>
 			<div className="proizvodi-container col-sm-12">
 				{items.map((item) => {
 					return <Item key={item.productCode} proizvod={item} />;

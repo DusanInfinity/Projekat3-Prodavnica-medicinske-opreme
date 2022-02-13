@@ -67,7 +67,7 @@ function Korpa() {
 
 	return (
 		<div className="col-md-8 d-flex flex-column align-items-center">
-			<h1>Korpa page</h1>
+			<h1>Korpa</h1>
 			<div className="col-md-12 d-flex justify-content-between">
 				<table className="col-md-9 korpa-tabela">
 					<thead className="col-md-12">
