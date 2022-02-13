@@ -20,6 +20,7 @@ function App() {
 			products = JSON.parse(products);
 			setKorpaCounter(products.length);
 		}
+		//document.title = "DSMed";
 	}, []);
 
 	return (

@@ -36,7 +36,7 @@ function Search({ korpaCounter, setKorpaCounter }) {
 	const fetchRandomProizvode = async () => {
 		try {
 			const data = await api.produkti.vratiNasumicneProdukte();
-			setRandomProizvodi(data.slice(0, 4)); // 4-5 proizvoda da vraca ili 8-10
+			setRandomProizvodi(data.slice(0, 8));
 		} catch (e) {
 			alert(e.message);
 		}

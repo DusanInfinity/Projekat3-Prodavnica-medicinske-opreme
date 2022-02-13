@@ -2,3 +2,8 @@
 [12.02.2022 22:55:35.867] | INFO | [Brisanje komentara] 0 Stefan Dobrosavljevic 12.2.2022. 21:55:33
 [12.02.2022 23:00:05.880] | INFO | [Brisanje komentara] 0 Stefan Dobrosavljevic 12.2.2022. 22:00:03
 [12.02.2022 23:02:51.449] | INFO | [Brisanje komentara] 0 Stefan Dobrosavljevic 12.2.2022. 22:00:09
+[13.02.2022 19:17:32.193] | INFO | [Brisanje komentara] 6 Stefan Dobrosavljevic 13.2.2022. 18:17:22
+[13.02.2022 19:18:51.653] | INFO | [Brisanje komentara] 6 Stefan Dobrosavljevic 13.2.2022. 18:18:49
+[13.02.2022 19:19:54.818] | INFO | [Brisanje komentara] 6 Stefan Dobrosavljevic 13.2.2022. 18:19:22
+[13.02.2022 19:22:44.606] | INFO | [Brisanje komentara] 6 Stefan Dobrosavljevic 13.2.2022. 18:20:45
+[13.02.2022 19:22:48.627] | INFO | [Brisanje komentara] 6 Stefan Dobrosavljevic 13.2.2022. 18:17:29

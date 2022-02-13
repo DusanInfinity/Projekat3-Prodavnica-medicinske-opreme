@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate} from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import "./App.css";
 import ApiClient from "./Global/apiClient";
 
 function KomentariProfil({ productCode }) {
-
 	const navigate = useNavigate();
 
 	const { id } = useParams();
@@ -136,7 +135,7 @@ function KomentariProfil({ productCode }) {
 											komentari.filter(
 												(el) =>
 													el.email !==
-														komentar.email &&
+														komentar.email ||
 													el.date !== komentar.date
 											)
 										);

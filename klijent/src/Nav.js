@@ -249,7 +249,7 @@ function Nav({ korpaCounter }) {
 							}
 						}}
 					>
-						Sacuvaj izmene
+						Sačuvaj proizvod
 					</Button>
 				</Modal.Footer>
 			</Modal>

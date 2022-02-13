@@ -366,7 +366,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 							}
 						}}
 					>
-						Sacuvaj izmene
+						Sačuvaj izmene
 					</Button>
 				</Modal.Footer>
 			</Modal>
@@ -402,7 +402,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 							}
 						}}
 					>
-						Sacuvaj
+						Sačuvaj
 					</Button>
 				</Modal.Footer>
 			</Modal>
