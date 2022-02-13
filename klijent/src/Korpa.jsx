@@ -156,22 +156,10 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 								<button
 									className="btn btn-outline-primary"
 									onClick={() => {
-										const data =
-											sessionStorage.getItem("user");
-										if (data) {
-											if (items.length !== 0) {
-												setOtvoriFormu(!otvoriFormu);
-											} else {
-												alert(
-													"Nemate proizvode u korpi."
-												);
-											}
+										if (items.length !== 0) {
+											setOtvoriFormu(!otvoriFormu);
 										} else {
-											alert(
-												"Morate biti prijavljeni da bi ste izvršili porudžbinu."
-											);
-
-											navigate("/login");
+											alert("Nemate proizvode u korpi.");
 										}
 									}}
 								>

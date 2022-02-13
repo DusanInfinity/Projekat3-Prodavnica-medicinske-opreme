@@ -22,7 +22,18 @@ function FormaPorudzbina({
 		return null;
 	} else {
 		const data = sessionStorage.getItem("user");
-		const user = JSON.parse(data);
+		let user;
+		if(data){
+			user = JSON.parse(data);
+		}
+		else{
+			user = {
+				firstname: "",
+				lastname: "",
+				address: "",
+				phoneNumber: "",
+			}
+		}
 
 		return (
 			<div className="mt-5 col-md-12">
