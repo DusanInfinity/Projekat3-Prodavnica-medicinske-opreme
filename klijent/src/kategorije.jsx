@@ -20,9 +20,9 @@ function Kategorije() {
     const data = [
       "Lekovi",
       "Parfemi",
-      "Deciji kutak",
-      "Muski kutak",
-      "Zenski kutak",
+      "Dečiji kutak",
+      "Muški kutak",
+      "Ženski kutak",
     ];
 
     setKategorije(data);

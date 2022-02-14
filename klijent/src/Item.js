@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 	useEffect(() => {
@@ -23,11 +23,18 @@ function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 
 	return (
 		<div className="proizvod-container">
-			<Link to={`/item/${item.productCode}`}>
-				<img src={item.image} alt="/" />
-			</Link>
-			<div className="">
+			<div>
+				<Link to={`/item/${item.productCode}`}>
+					{item.image !== undefined && (
+						<img
+							src={require(`${item.image}`)}
+							alt="/"
+						/>
+					)}
+				</Link>
 				<h4>{item.name}</h4>
+			</div>
+			<div className="d-flex flex-column justify-content-between">
 				<h4 style={{ color: "red", fontWeight: "700" }}>
 					{formatPrice(item.price)}
 				</h4>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -19,10 +19,10 @@ function Nav({ korpaCounter }) {
 
 	const kategorije = [
 		"Parfemi",
-		"Deciji kutak",
-		"Muski kutak",
+		"Dečiji kutak",
+		"Muški kutak",
 		"Lekovi",
-		"Zenski kutak",
+		"Ženski kutak",
 	];
 
 	let navigate = useNavigate();
@@ -241,7 +241,7 @@ function Nav({ korpaCounter }) {
 								price: cena,
 								quantity: kolicina,
 								description: deskripcija,
-								image: "https://shop.lilly.rs/media/catalog/product/cache/e9fe89bb0d3d5e05736d64f06cc6558c/5/0/5060693811968_1.jpg",
+								image: `./assets/${kategorija}.jpg`,
 								category: kategorija,
 							};
 							try {
@@ -279,7 +279,7 @@ function Nav({ korpaCounter }) {
 			</div>
 			<div className="nav col-md-8 justify-content-between">
 				<Link to={"/"}>
-					<img className="logo-img rounded-pill" src={require("./Logo.png")}></img>
+					<img className="logo-img rounded-pill" src={require("./Logo.png")} alt={"#"}></img>
 				</Link>
 				<div className="d-flex col-md-5 align-items-center">
 					<div className="input-group">
@@ -311,7 +311,7 @@ function Nav({ korpaCounter }) {
 					>
 						<div
 							className=""
-							style={{ fontSize: "1.2rem", color: "orange", fontWeight: "bold" }}
+							style={{ fontSize: "1.2rem", color: "green", fontWeight: "bold" }}
 						>
 							<i
 								className="bi bi-cart me-2"

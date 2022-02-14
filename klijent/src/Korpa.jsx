@@ -20,9 +20,9 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 
 	useEffect(() => {
 		let cena = 0;
-		items.map((item) => {
+		for(const item of items){
 			cena += item.price * item.kolicina;
-		});
+		};
 		setUkupnaCena(cena);
 	}, [items]);
 

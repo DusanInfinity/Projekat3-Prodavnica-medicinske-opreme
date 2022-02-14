@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import KomentariProfil from "./komentariProfil";
 import ApiClient from "./Global/apiClient";
 import { Modal, Button } from "react-bootstrap";
@@ -18,14 +18,6 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 	const [trenutnaOcena, setTrenutnaOcena] = useState(0);
 	const [zvezdice, setZvezdice] = useState([]);
 
-	const kategorije = [
-		"Parfemi",
-		"Deciji kutak",
-		"Muski kutak",
-		"Lekovi",
-		"Zenski kutak",
-	];
-
 	//modal stvari
 	const [showIzmeni, setShowIzmeni] = useState(false);
 	const handleCloseIzmeni = () => setShowIzmeni(false);
@@ -40,7 +32,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 		inicijalizujZvezdice(id);
 	}, []);
 
-	useEffect(async () => {
+	useEffect(() => {
 		obojiZvezdice();
 	}, [zvezdice, trenutnaOcena]);
 
@@ -359,7 +351,9 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 									"application/json"
 								);
 								await api.produkti.azurirajProdukt(product);
-								alert(`Produkt ${product.name} Uspešno azuriran!`);
+								alert(
+									`Produkt ${product.name} Uspešno azuriran!`
+								);
 								window.location.reload();
 							} catch (e) {
 								alert(e.message);
@@ -395,7 +389,9 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 								await api.produkti.obrisiProdukt(
 									item.productCode
 								);
-								alert(`Uspešno ste obrisali proizvod ${item.name} iz baze!`);
+								alert(
+									`Uspešno ste obrisali proizvod ${item.name} iz baze!`
+								);
 								navigate("/");
 							} catch (e) {
 								alert(e.message);
@@ -447,9 +443,8 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 	};
 
 	const oceniZvezdice = async (redniBroj) => {
-
 		const data = sessionStorage.getItem("user");
-		if(data){
+		if (data) {
 			try {
 				api.setHeader("Content-Type", "application/json");
 				await api.ocene.oceniProizvod(item.productCode, redniBroj);
@@ -458,8 +453,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 			} catch (e) {
 				alert(e.message);
 			}
-		}
-		else{
+		} else {
 			alert("Morate biti prijavljeni da bi ste ocenili proizvod.");
 			navigate("/login");
 		}
@@ -496,21 +490,30 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 	return (
 		<div className="col-md-8 d-flex flex-column">
 			<div className="proizvod-profil-container col-md-12 d-flex">
-				<img
-					src={item.image}
-					alt="/"
-					className="col-md-6"
-					style={{ height: "60vh", width: "auto", objectFit: "cover" }}
-				/>
+				{item.image !== undefined && (
+					<img
+						src={require(`${item.image}`)}
+						alt="/"
+						className="col-md-6"
+						style={{
+							height: "60vh",
+							width: "auto",
+							objectFit: "cover",
+						}}
+					/>
+				)}
 				<div className="proizvod-profil-data col-md-6 p-5">
-					<h1 style={{fontWeight: "600"}}>{item.name}</h1>
+					<h1 style={{ fontWeight: "600" }}>{item.name}</h1>
 					<ProizvodNaStanju kolicina={item.quantity} />
 					<div>
 						<OceniProizvod />
 					</div>
 					<hr />
 					<h5>{item.description}</h5>
-					<h2 className="mt-3 mb-3" style={{ fontWeight: "bold", color: "#e6127c" }}>
+					<h2
+						className="mt-3 mb-3"
+						style={{ fontWeight: "bold", color: "#e6127c" }}
+					>
 						{formatPrice(item.price)}
 					</h2>
 					<DodajUKorpu kol={item.quantity} />

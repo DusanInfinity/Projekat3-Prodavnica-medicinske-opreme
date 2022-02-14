@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Item from "./Item";
 import ApiClient from "./Global/apiClient";
 

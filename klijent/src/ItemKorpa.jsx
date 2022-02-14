@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ItemKorpa({
 	proizvod,
@@ -26,11 +26,11 @@ function ItemKorpa({
 	useEffect(() => {
 		updateLocalStorage();
 		setukupnaSumaProizvoda(item.price * kolicina);
-		items.map((el) => {
+		for (let el of items) {
 			if (el.productCode === item.productCode) {
 				el.kolicina = kolicina;
 			}
-		});
+		}
 	}, [kolicina]);
 
 	useEffect(() => {
@@ -55,9 +55,7 @@ function ItemKorpa({
 			localStorage.setItem("korpa_proizvodi", JSON.stringify(local));
 			alert(`Uspešno ste obrisali proizvod ${item.name} iz korpe.`);
 		}
-		
 	};
-
 
 	function formatPrice(price) {
 		return new Intl.NumberFormat("de-DE", {
@@ -98,14 +96,15 @@ function ItemKorpa({
 					<i className="bi bi-trash"></i>
 				</button>
 				<Link to={`/item/${item.productCode}`}>
-					<img src={item.image} alt="/" />
+					{item.image !== undefined && (
+						<img src={require(`${item.image}`)} alt="/" />
+					)}
 				</Link>
 				<h5 className="mx-4">{item.name}</h5>
 			</td>
 			<td
 				style={{
 					width: "10%",
-					
 				}}
 			>
 				<h5>{formatPrice(item.price)}</h5>
@@ -114,7 +113,6 @@ function ItemKorpa({
 			<td
 				style={{
 					width: "20%",
-					
 				}}
 			>
 				<div className="">

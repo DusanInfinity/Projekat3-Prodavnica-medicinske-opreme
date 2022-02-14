@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import Nav from "./Nav";
 import About from "./About";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ItemProfil from "./ItemProfil";
 import Home from "./home";
 import Kategorija from "./kategorija";
@@ -79,7 +79,7 @@ function App() {
 				</Routes>
 				<div className="pb-5"></div>
 				<div id="footer">
-					<div className="text-center">
+					<div className="text-right">
 						<label>© 2022 Copyright: DSoft team</label>
 					</div>
 				</div>
