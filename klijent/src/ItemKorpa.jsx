@@ -97,7 +97,10 @@ function ItemKorpa({
 				</button>
 				<Link to={`/item/${item.productCode}`}>
 					{item.image !== undefined && (
-						<img src={require(`${item.image}`)} alt="/" />
+						<img
+							src={require(`${item.image}`)}
+							alt="/"
+						/>
 					)}
 				</Link>
 				<h5 className="mx-4">{item.name}</h5>
