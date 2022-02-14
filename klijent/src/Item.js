@@ -14,6 +14,13 @@ function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 		setItem(data);
 	};
 
+	function formatPrice(price) {
+		return new Intl.NumberFormat("de-DE", {
+			style: "currency",
+			currency: "RSD",
+		}).format(price);
+	}
+
 	return (
 		<div className="proizvod-container">
 			<Link to={`/item/${item.productCode}`}>
@@ -22,7 +29,7 @@ function Item({ proizvod, korpaCounter, setKorpaCounter }) {
 			<div className="">
 				<h4>{item.name}</h4>
 				<h4 style={{ color: "red", fontWeight: "700" }}>
-					{item.price} RSD
+					{formatPrice(item.price)}
 				</h4>
 				<div className="d-flex justify-content-around mb-3">
 					<button

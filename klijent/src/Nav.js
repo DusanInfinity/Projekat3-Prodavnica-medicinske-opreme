@@ -40,7 +40,7 @@ function Nav({ korpaCounter }) {
 				<div className="col-md-8 d-flex justify-content-end align-items-center">
 					<i
 						className="bi bi-person"
-						style={{ fontSize: "2rem", color: "blue" }}
+						style={{ fontSize: "2rem", color: "#0d6efd" }}
 					></i>
 					<Link
 						to={"/"}
@@ -60,13 +60,21 @@ function Nav({ korpaCounter }) {
 				<div className="col-md-8 d-flex justify-content-end align-items-center">
 					<i
 						className="bi bi-person"
-						style={{ fontSize: "2rem", color: "blue" }}
+						style={{ fontSize: "2rem", color: "#0d6efd" }}
 					></i>
-					<Link to={"/login"} className="mx-2">
+					<Link
+						to={"/login"}
+						className="mx-2"
+						style={{ textDecoration: "none" }}
+					>
 						Prijava
 					</Link>
 					/
-					<Link to={"/registracija"} className="mx-2">
+					<Link
+						to={"/registracija"}
+						className="mx-2"
+						style={{ textDecoration: "none" }}
+					>
 						Registracija
 					</Link>
 				</div>
@@ -271,7 +279,7 @@ function Nav({ korpaCounter }) {
 			</div>
 			<div className="nav col-md-8 justify-content-between">
 				<Link to={"/"}>
-					<img className="logo-img" src={require("./Logo.png")}></img>
+					<img className="logo-img rounded-pill" src={require("./Logo.png")}></img>
 				</Link>
 				<div className="d-flex col-md-5 align-items-center">
 					<div className="input-group">
@@ -295,16 +303,19 @@ function Nav({ korpaCounter }) {
 						</div>
 					</div>
 				</div>
-				<div className="col-md-3 d-flex justify-content-between align-items-center">
+				<div className="col-md-3 d-flex justify-content-end align-items-center">
 					<Link
 						to={"/korpa"}
 						className="col-md-6 d-flex-row justify-content-between"
 						style={{ textDecoration: "none" }}
 					>
-						<div className="">
+						<div
+							className=""
+							style={{ fontSize: "1.2rem", color: "orange", fontWeight: "bold" }}
+						>
 							<i
 								className="bi bi-cart me-2"
-								style={{ fontSize: "1.2rem" }}
+								style={{ fontSize: "1.4rem" }}
 							></i>
 							Korpa (
 							<span className="korpa-counter">

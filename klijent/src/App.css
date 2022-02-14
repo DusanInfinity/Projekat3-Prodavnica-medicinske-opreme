@@ -65,6 +65,10 @@ nav {
 	object-fit: cover;
 }
 
+.korpa-tabela{
+	height: min-content;
+}
+
 .korpa-tabela thead {
 	border-top: 1px solid lightgray;
 	border-bottom: 1px solid lightgray;
@@ -91,7 +95,14 @@ nav {
 .korpa-tabela tbody td {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 }
+
+
+
+
+
+
 
 .star-wrapper {
 	display: flex;

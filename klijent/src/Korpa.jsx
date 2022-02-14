@@ -26,6 +26,14 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 		setUkupnaCena(cena);
 	}, [items]);
 
+
+	function formatPrice(price) {
+		return new Intl.NumberFormat("de-DE", {
+			style: "currency",
+			currency: "RSD",
+		}).format(price);
+	}
+
 	const onPlus = (item) => {
 		const exists = items.find((x) => x.productCode === item.productCode);
 		if (exists) {
@@ -77,7 +85,6 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 							<thead className="col-md-12">
 								<tr
 									style={{
-										display: "block",
 										width: "100%",
 										textAlign: "center",
 									}}
@@ -95,7 +102,6 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 										style={{
 											width: "10%",
 											display: "inline-block",
-											verticalAlign: "middle",
 										}}
 									>
 										Cena
@@ -106,7 +112,7 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 											display: "inline-block",
 										}}
 									>
-										Kolicina
+										Količina
 									</th>
 									<th
 										style={{
@@ -137,22 +143,24 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 							</tbody>
 						</table>
 						<div className="col-md-3 ps-3">
-							<h3 className="border-bottom pb-2 mb-2">
-								Pregled:
-							</h3>
-							<div className="border-bottom mb-2">
-								<label>Medjuzbir</label>
-								<h2>{ukupnaCena} RSD</h2>
+							<div style={{textAlign: "right"}}>
+								<h3 className="border-bottom pb-2 mb-2">
+									Pregled:
+								</h3>
 							</div>
-							<div className="border-bottom mb-2">
+							<div className="border-bottom mb-2"  style={{textAlign: "right"}}>
+								<label>Medjuzbir</label>
+								<h2>{formatPrice(ukupnaCena)}</h2>
+							</div>
+							<div className="border-bottom mb-2"  style={{textAlign: "right"}}>
 								<label>Dostava</label>
 								<h2>0 RSD</h2>
 							</div>
-							<div className="border-bottom mb-2">
+							<div className="border-bottom mb-2"  style={{textAlign: "right"}}>
 								<label>Ukupno</label>
-								<h2>{ukupnaCena} RSD</h2>
+								<h2>{formatPrice(ukupnaCena)}</h2>
 							</div>
-							<div>
+							<div  style={{textAlign: "right"}}>
 								<button
 									className="btn btn-outline-primary"
 									onClick={() => {
@@ -163,7 +171,7 @@ function Korpa({ korpaCounter, setKorpaCounter }) {
 										}
 									}}
 								>
-									Nastavi porudzbinu
+									Nastavi porudžbinu
 								</button>
 							</div>
 						</div>

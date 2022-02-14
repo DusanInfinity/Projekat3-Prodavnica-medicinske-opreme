@@ -249,7 +249,7 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 								className="btn btn-danger"
 								onClick={handleShowObrisi}
 							>
-								Obrisi proizvod
+								Obriši proizvod
 							</button>
 						</div>
 					</div>
@@ -500,17 +500,17 @@ function ItemProfil({ korpaCounter, setKorpaCounter }) {
 					src={item.image}
 					alt="/"
 					className="col-md-6"
-					style={{ height: "60vh", width: "auto", objectFit: "" }}
+					style={{ height: "60vh", width: "auto", objectFit: "cover" }}
 				/>
-				<div className="proizvod-profil-data col-md-6">
-					<h2>{item.name}</h2>
+				<div className="proizvod-profil-data col-md-6 p-5">
+					<h1 style={{fontWeight: "600"}}>{item.name}</h1>
 					<ProizvodNaStanju kolicina={item.quantity} />
 					<div>
 						<OceniProizvod />
 					</div>
 					<hr />
 					<h5>{item.description}</h5>
-					<h2 style={{ fontWeight: "bold", color: "#e6127c" }}>
+					<h2 className="mt-3 mb-3" style={{ fontWeight: "bold", color: "#e6127c" }}>
 						{formatPrice(item.price)}
 					</h2>
 					<DodajUKorpu kol={item.quantity} />

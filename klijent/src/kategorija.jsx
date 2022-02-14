@@ -27,7 +27,7 @@ function Kategorija({ korpaCounter, setKorpaCounter }) {
 		if (items.length === 0) {
 			return (
 				<div className="mt-5">
-					<h2>Žao name je trenutno nema proizvoda!</h2>
+					<h2>Žao nam je, trenutno nema proizvoda!</h2>
 				</div>
 			);
 		}

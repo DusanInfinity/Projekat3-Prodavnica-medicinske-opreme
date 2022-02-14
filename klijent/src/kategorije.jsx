@@ -32,7 +32,7 @@ function Kategorije() {
     <div className="my-3 col-md-8 d-flex flex-row justify-content-center align-items-center">
       {kategorije.map((item) => {
         return (
-          <button key={item} className="btn btn-primary kategorija-dugme" onClick={() => routeChange(item)}>
+          <button key={item} className="btn btn-primary kategorija-dugme rounded" onClick={() => routeChange(item)}>
             {item}
           </button>
         );

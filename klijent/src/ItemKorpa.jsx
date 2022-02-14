@@ -58,6 +58,14 @@ function ItemKorpa({
 		
 	};
 
+
+	function formatPrice(price) {
+		return new Intl.NumberFormat("de-DE", {
+			style: "currency",
+			currency: "RSD",
+		}).format(price);
+	}
+
 	const brisanje = (item) => {
 		const obrisani = items.filter(
 			(i) => i.productCode !== item.productCode
@@ -92,24 +100,24 @@ function ItemKorpa({
 				<Link to={`/item/${item.productCode}`}>
 					<img src={item.image} alt="/" />
 				</Link>
-				<label className="mx-4">{item.name}</label>
+				<h5 className="mx-4">{item.name}</h5>
 			</td>
 			<td
 				style={{
 					width: "10%",
-					display: "inline-block",
+					
 				}}
 			>
-				<label>{item.price} RSD</label>
+				<h5>{formatPrice(item.price)}</h5>
 			</td>
 
 			<td
 				style={{
 					width: "20%",
-					display: "inline-block",
+					
 				}}
 			>
-				<div className="mb-3">
+				<div className="">
 					<div className="input-group">
 						<div className="input-group-prepend">
 							<button
@@ -159,11 +167,10 @@ function ItemKorpa({
 			<td
 				style={{
 					width: "20%",
-					display: "inline-block",
 					textAlign: "center",
 				}}
 			>
-				{ukupnaSumaProizvoda} RSD
+				<h5>{formatPrice(ukupnaSumaProizvoda)}</h5>
 			</td>
 		</tr>
 	);
